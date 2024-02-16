@@ -1,2 +1,3 @@
-from binance.binance import Binance
-Binance(True).get_spot()
+#!/bin/python3
+from apibinance.binance import Binance
+print(Binance(True).get_spot().getbalances().getwallets().keys())

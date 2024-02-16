@@ -3,7 +3,7 @@ import hmac
 import hashlib
 import time
 import os
-from spot import spot
+from .spot import spot
 from dotenv import load_dotenv
 load_dotenv()
 class Binance:
