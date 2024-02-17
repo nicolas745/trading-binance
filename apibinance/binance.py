@@ -10,7 +10,8 @@ from .simpleearn import simple_earn
 from dotenv import load_dotenv
 load_dotenv()
 class Binance:
-    def __init__(self, testnet: bool = False) -> None:
+    def __init__(self) -> None:
+        testnet = os.getenv("testnet")
         if testnet:
             self.api_secret = os.getenv("testnet_api_secret")
             self.api_key = os.getenv("testnet_api_key")
@@ -23,7 +24,7 @@ class Binance:
         binance_api_key = self.api_key
         binance_secret_key = self.api_secret
         client = Client(binance_api_key, binance_secret_key,testnet=False)
-        response = client.get_account()
+        response = client.get_simple_earn_flexible_product_list()
         print(response)
         return spot(response)
     def get_earn(self):

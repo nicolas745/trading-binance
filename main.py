@@ -2,5 +2,5 @@
 from apibinance.binance import Binance
 from web.main import main,run
 #main()
-print(Binance(False).get_spot().getdata())
+print(Binance().get_spot().getdata())
 #run()
