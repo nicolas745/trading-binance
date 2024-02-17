@@ -1,3 +1,6 @@
-#!/bin/python3
+#!.venv/bin/python3
 from apibinance.binance import Binance
-print(Binance(True).get_spot().getbalances().getwallets().keys())
+from web.main import main,run
+#main()
+print(Binance(False).get_spot().getdata())
+#run()

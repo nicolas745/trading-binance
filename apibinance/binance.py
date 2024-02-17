@@ -3,7 +3,10 @@ import hmac
 import hashlib
 import time
 import os
+from binance.client import Client
+
 from .spot import spot
+from .simpleearn import simple_earn
 from dotenv import load_dotenv
 load_dotenv()
 class Binance:
@@ -17,13 +20,11 @@ class Binance:
             self.api_secret = os.getenv("api_secret")
             self.api_key = os.getenv("api_key")
     def get_spot(self) -> spot:
-        timestamp = int(time.time() * 1000)
-        query_string = 'timestamp=' + str(timestamp)
-        signature = hmac.new(bytes(self.api_secret , 'latin-1'), msg = bytes(query_string , 'latin-1'), digestmod = hashlib.sha256).hexdigest()
-
-        headers = {
-            'X-MBX-APIKEY': self.api_key
-        }
-        url = self.base_url+"api/v3/account?" + query_string + "&signature=" + signature
-        response = requests.get(url, headers=headers)
-        return spot(response.json())
+        binance_api_key = self.api_key
+        binance_secret_key = self.api_secret
+        client = Client(binance_api_key, binance_secret_key,testnet=False)
+        response = client.get_account()
+        print(response)
+        return spot(response)
+    def get_earn(self):
+        return simple_earn(self.base_url,self.api_secret,self.api_key)
