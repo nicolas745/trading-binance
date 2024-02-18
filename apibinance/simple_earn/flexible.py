@@ -9,7 +9,7 @@ class flexible:
     def retir(self, crypto, valeur):
         data = self.getmyposition()
         for position in data["rows"]:
-            if position["asset"] == crypto and float(position["totalAmount"]) >= valeur:
+            if position["asset"] == crypto and float(position["totalAmount"]) >= valeur and position["minPurchaseAmount"]<=valeur:
                 productId = position["productId"]
                 res = self.client.redeem_simple_earn_flexible_product(amount=valeur, product_id=productId)
                 return res["success"]

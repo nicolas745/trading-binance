@@ -1,7 +1,3 @@
-import requests
-import hmac
-import hashlib
-import time
 import os
 from binance.client import Client
 
@@ -19,7 +15,8 @@ class Binance:
             self.api_secret = os.getenv("api_secret")
             self.api_key = os.getenv("api_key")
         self.client = Client(self.api_key , self.api_secret,testnet=self.testnet)
+        Client.transfer_history()
     def get_spot(self) -> spot:
-        return spot(self.client.get_account())
+        return spot(self.client)
     def get_earn(self):
         return simple_earn(self.client)
