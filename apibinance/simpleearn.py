@@ -1,8 +1,7 @@
 from .simple_earn.flexible import flexible
+from binance.client import Client
 class simple_earn():
-    def __init__(self,base_url,api_secret,api_key) -> None:
-        self.base_url = base_url
-        self.api_secret = api_secret
-        self.api_key = api_key
+    def __init__(self,client) -> None:
+        self.client = client
     def getflexible(self):
-        return flexible(self.base_url,self.api_secret,self.api_key)
+        return flexible(self.client)

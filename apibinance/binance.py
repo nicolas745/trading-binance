@@ -11,21 +11,15 @@ from dotenv import load_dotenv
 load_dotenv()
 class Binance:
     def __init__(self) -> None:
-        testnet = os.getenv("testnet")
-        if testnet:
+        self.testnet = bool(os.getenv("testnet"))
+        if self.testnet:
             self.api_secret = os.getenv("testnet_api_secret")
             self.api_key = os.getenv("testnet_api_key")
-            self.base_url = "https://testnet.binance.vision/"
         else:
-            self.base_url = "https://api.binance.com/"
             self.api_secret = os.getenv("api_secret")
             self.api_key = os.getenv("api_key")
+        self.client = Client(self.api_key , self.api_secret,testnet=self.testnet)
     def get_spot(self) -> spot:
-        binance_api_key = self.api_key
-        binance_secret_key = self.api_secret
-        client = Client(binance_api_key, binance_secret_key,testnet=False)
-        response = client.get_simple_earn_flexible_product_list()
-        print(response)
-        return spot(response)
+        return spot(self.client.get_account())
     def get_earn(self):
-        return simple_earn(self.base_url,self.api_secret,self.api_key)
+        return simple_earn(self.client)
