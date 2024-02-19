@@ -5,5 +5,4 @@ class configenv(Enum):
         API_SECRET="api_secret"
         API_KEY="api_key"
         TESTNET="testnet"
-        YUBIKEY_ID="yubikey_id"
-        YUBIKEY_SECRET="yubikey_secret"
+        FOOTPRINTGPG="id_gpg"

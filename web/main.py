@@ -2,6 +2,7 @@ from flask import Flask
 import os
 import importlib
 app = Flask(__name__)
+app.secret_key = os.urandom(24).hex()
 class main():
     def __init__(self) -> None:
         directory = "web/serv"
@@ -16,7 +17,6 @@ class main():
                     # Vérifiez si l'objet est une classe
                     if isinstance(obj, type):
                         if(obj.__module__==module_path[:-3].replace("/",".")):
-                            print(obj)
                             obj(app)
 def run():
     if __name__ == 'web.main':

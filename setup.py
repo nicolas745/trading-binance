@@ -20,8 +20,7 @@ class Config:
                 env_file.write(f"{key}={self.env[key]}\n")
     def setup_config(self):
         for envkey in self.env:
-            if self.env[envkey]==None:
-                self.env[envkey] = self.get_user_input(envkey)
+            self.env[envkey] = self.get_user_input(envkey)
 if __name__ == "__main__":
     config = Config()
     config.setup_config()
