@@ -6,3 +6,5 @@ class configenv(Enum):
         API_KEY="api_key"
         TESTNET="testnet"
         FOOTPRINTGPG="id_gpg"
+        MONEY_PTINCIPAL="money_principal"
+        MONEY_ECHANGE="money_echange"
