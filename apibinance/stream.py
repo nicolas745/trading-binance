@@ -17,8 +17,9 @@ class stream:
     async def updateprix(self):
         client = await AsyncClient.create(api_key=self.client.API_KEY, api_secret=self.client.API_SECRET)
         bm = BinanceSocketManager(client)
-        ts = bm.futures_socket()  # Vous pouvez également essayer bm.futures_user_socket()
+        ts = bm.trade_socket()  # Vous pouvez également essayer bm.futures_user_socket()
         async with ts as tscm:
             while True:
+                time.sleep(1)
                 res = await tscm.recv()
                 print(res)
