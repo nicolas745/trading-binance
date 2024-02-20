@@ -7,6 +7,7 @@ from .stream import stream
 from classenum.env import configenv
 from dotenv import load_dotenv
 load_dotenv()
+from flask_socketio import SocketIO
 class Binance:
     def __init__(self) -> None:
         self.testnet = bool(os.getenv(configenv.TESTNET.value))
@@ -21,5 +22,5 @@ class Binance:
         return spot(self.client)
     def get_earn(self):
         return simple_earn(self.client)
-    def get_stream(self):
-        return stream(self.client)
+    def get_stream(self,socketio:SocketIO):
+        return stream(self.client,socketio)

@@ -3,23 +3,26 @@ from binance.streams import BinanceSocketManager
 import time
 import asyncio
 import threading
+from flask_socketio import SocketIO
 import os
 from classenum.env import configenv
 class stream:
-    def __init__(self, client:Client)  -> None:
+    def __init__(self, client:Client,socketio:SocketIO)  -> None:
         self.client = client
+        self.socketio = socketio
         threading.Thread(target=self.start).start()
     def start(self):
-        loop = asyncio.get_event_loop()
+        loop = asyncio.new_event_loop()  # Créez une nouvelle boucle d'événements
+        asyncio.set_event_loop(loop)  # Définissez la nouvelle boucle comme la boucle d'événements pour ce thread
         loop.run_until_complete(self.updateprix())
-    def getdata(self,data):
-        print(data)
+    def getdata(self):
+        return self.data
     async def updateprix(self):
         client = await AsyncClient.create(api_key=self.client.API_KEY, api_secret=self.client.API_SECRET)
         bm = BinanceSocketManager(client)
-        ts = bm.trade_socket()  # Vous pouvez également essayer bm.futures_user_socket()
+        ts = bm.trade_socket(f"{os.getenv(configenv.MONEY_ECHANGE.value)}{os.getenv(configenv.MONEY_PTINCIPAL.value)}")  # Vous pouvez également essayer bm.futures_user_socket()
         async with ts as tscm:
             while True:
-                time.sleep(1)
+                time.sleep(60)
                 res = await tscm.recv()
-                print(res)
+                self.socketio.emit("prix",res['p'])

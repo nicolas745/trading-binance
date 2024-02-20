@@ -1,8 +1,11 @@
 from flask import Flask
+from flask_socketio import SocketIO
 import os
 import importlib
 app = Flask(__name__)
 app.secret_key = os.urandom(24).hex()
+Socketio =SocketIO()
+Socketio.init_app(app)
 class main():
     def __init__(self) -> None:
         directory = "web/serv"
@@ -17,7 +20,7 @@ class main():
                     # Vérifiez si l'objet est une classe
                     if isinstance(obj, type):
                         if(obj.__module__==module_path[:-3].replace("/",".")):
-                            obj(app)
+                            obj(app,Socketio)
 def run():
     if __name__ == 'web.main':
-        app.run(debug=True)
+        Socketio.run(app,debug=True)

@@ -1,9 +1,10 @@
 from flask import Flask, session, redirect, render_template
 from chameleon import PageTemplate
+from flask_socketio import SocketIO
 from apibinance.binance import Binance
 class panel():
-     def __init__(self,app:Flask) -> None:
-          stream=Binance().get_stream()
+     def __init__(self,app:Flask,socket:SocketIO) -> None:
+          stream=Binance().get_stream(socketio=socket)
           @app.get("/panel")
           def panel():
                if(not session.get("user")):

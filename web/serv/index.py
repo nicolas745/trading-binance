@@ -2,6 +2,7 @@ from flask import Flask, render_template, request,session, redirect
 import os
 from dotenv import load_dotenv
 from classenum.env import configenv
+from flask_socketio import SocketIO
 import gnupg
 load_dotenv()
 import time
@@ -9,7 +10,7 @@ import random
 import string
 import threading
 class index():
-    def __init__(self,app:Flask) -> None:
+    def __init__(self,app:Flask,socketio:SocketIO) -> None:
         self.passwd = None
         @app.get("/")
         def getlogin():

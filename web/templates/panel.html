@@ -6,9 +6,18 @@
     <title>Document</title>
 </head>
 <body>
+    <script src="http://localhost:5000/static/socket.io.min.js"></script>
+    <script>
+        const socket = io();
+  </script>
     <p>prix</p>
     <p tal:replace="'sss'"></p>
     <p>capital dispo</p>
-    <p><span tal:replace="'ss'"></span></p>
+    <p><span id="prix"></span></p>
+    <script>
+        socket.on("prix",(prix)=>{
+            document.getElementById("prix").innerText = prix
+        })
+    </script>
 </body>
 </html>
