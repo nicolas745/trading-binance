@@ -3,6 +3,7 @@ from binance.client import Client
 
 from .spot import spot
 from .simpleearn import simple_earn
+from .stream import stream
 from classenum.env import configenv
 from dotenv import load_dotenv
 load_dotenv()
@@ -21,3 +22,5 @@ class Binance:
         return spot(self.client)
     def get_earn(self):
         return simple_earn(self.client)
+    def get_stream(self):
+        return stream(self.client)
