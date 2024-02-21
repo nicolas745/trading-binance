@@ -1,5 +1,5 @@
 <p>prix</p>
-<p>capital dispo: <span tal:replace="MONEY_ECHANGE"></span></p>
-<p>capital total: <span tal:replace="compte.captaltotal"></span> <span tal:replace="MONEY_PRINCIPAL"></span></p>
-<p>prix: <span id="prix"></span> <span tal:replace="MONEY_PRINCIPAL"></span></p>
-<p>contite de btc: <span tal:replace="quantiterbtc"></span> <span tal:replace="MONEY_ECHANGE"></span></p>
+<p>capital total: <span tal:replace="compte[CAPITAL_TOTAL]"></span> <span tal:replace="MONEY_PRINCIPAL"></span></p>
+<p>prix: <span tal:content="prix" id="prix"></span> <span tal:replace="MONEY_PRINCIPAL"></span></p>
+<p>quantié de <span tal:replace="MONEY_PRINCIPAL"></span>: <span tal:replace="compte[MONEY_PRINCIPAL]"></span> <span tal:replace="MONEY_PRINCIPAL"></span></p>
+<p>quantié de <span tal:replace="MONEY_ECHANGE"></span>: <span tal:replace="compte[MONEY_ECHANGE]"></span> <span tal:replace="MONEY_ECHANGE"></span></p>

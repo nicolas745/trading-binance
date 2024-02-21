@@ -1,16 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <script src="/static/socket.io.min.js"></script>
-    <script>
-        const socket = io();
-    </script>
-    <p>prix actuel : <span id="prix"></span></p>
+    <p>prix actuel : <span tal:content="prix" id="prix"></span></p>
     <table>
         <tr>
             <td>
@@ -23,28 +11,46 @@
                 prix achat
             </td>
             <td>
+                quantié
+            </td>
+            <td>
                 benefice - penalité
             </td>
             <td>
                 button sell
             </td>
             <td>
+                suprimer
+            </td>
+            <td>
                 edit
             </td>
         </tr>
         <tr tal:attributes="id order.id" tal:repeat="order orders">
-            <td tal:replace="order.timebuy" ></td>
-            <td tal:replace="order.pricebuy"></td>
-            <td tal:replace="order.diff" ></td>
+            <td tal:content="order.id"></td>
+            <td tal:content="order[DATE]"></td>
+            <td tal:content="order[QUANTITEACTIF]"></td>
+            <td tal:content="order[QUANTITEPRINCIPAL]"></td>
             <td>
-                <button></button>
+                <button>sell</button>
+            </td>
+            <td>
+                <button>del</button>
+            </td>
+            <td>
+                <button>edit</button>
             </td>
         </tr>
-        <script>
-            socket.on("prix",(prix)=>{
-                document.getElementById("prix").innerText = prix
-            })
-        </script>
     </table>
-</body>
-</html>
+    <form method="post">
+        <p>prix</p><input id="prix1" tal:attributes="name CAPITAL_TOTAL">
+        <p>date</p><input type="date" tal:attributes="name QUANTITEPRINCIPAL">
+        <p>quntité</p><input tal:attributes="name QUANTITEACTIF">
+        <input type="submit" value="ajouter" name="add">
+    </form>
+    <p>buy</p>
+    <form method="post">
+        <p>prix <p tal:replace="MONEY_PRINCIPAL"></p><input>
+        <p>prix <p tal:replace="MONEY_ECHANGE"></p><input>
+        <input  type="submit" value="buy">
+    </form>

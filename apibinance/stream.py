@@ -6,10 +6,12 @@ import threading
 from flask_socketio import SocketIO
 import os
 from classenum.env import configenv
+from classenum.sql import enumsql
 class stream:
     def __init__(self, client:Client,socketio:SocketIO)  -> None:
         self.client = client
         self.socketio = socketio
+        self.data = {enumsql.QUANTITEPRINCIPAL.value:0}
         threading.Thread(target=self.start).start()
     def start(self):
         loop = asyncio.new_event_loop()  # Créez une nouvelle boucle d'événements
@@ -25,4 +27,5 @@ class stream:
             while True:
                 time.sleep(5)
                 res = await tscm.recv()
+                self.data = {enumsql.QUANTITEPRINCIPAL.value:res['p']}
                 self.socketio.emit("prix",res['p'])
