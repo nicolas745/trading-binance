@@ -1,4 +1,4 @@
-    <p>prix actuel : <span tal:content="prix" id="prix"></span></p>
+    <p>prix actuel : <span id="prix"></span></p>
     <table>
         <tr>
             <td>
@@ -7,11 +7,9 @@
             <td>
                 date/heur achat
             </td>
-            <td>
-                prix achat
+            <td tal:content="MONEY_PRINCIPAL">
             </td>
-            <td>
-                quantié
+            <td tal:content="MONEY_ECHANGE">
             </td>
             <td>
                 benefice - penalité
@@ -43,9 +41,9 @@
         </tr>
     </table>
     <form method="post">
-        <p>prix</p><input id="prix1" tal:attributes="name CAPITAL_TOTAL">
-        <p>date</p><input type="date" tal:attributes="name QUANTITEPRINCIPAL">
-        <p>quntité</p><input tal:attributes="name QUANTITEACTIF">
+        <p>quantié <span tal:content="MONEY_PRINCIPAL"></span></p><input id="prix1" tal:attributes="name QUANTITEPRINCIPAL">
+        <p>quntité <span tal:content="MONEY_ECHANGE"></span></p><input tal:attributes="name QUANTITEACTIF">
+        <p>date</p><input type="datetime-local" tal:attributes="name DATE">
         <input type="submit" value="ajouter" name="add">
     </form>
     <p>buy</p>

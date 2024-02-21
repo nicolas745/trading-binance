@@ -7,7 +7,7 @@ class TradingDatabase:
     def __init__(self, database_name='trading.db'):
         self.asset1 = os.getenv(configenv.MONEY_PRINCIPAL.value)
         self.asset2 = os.getenv(configenv.MONEY_ECHANGE.value)
-        self.prix = enumsql.QUANTITEPRINCIPAL.value
+        self.quantitepricipal = enumsql.QUANTITEPRINCIPAL.value
         self.date = enumsql.DATE.value
         self.quantite = enumsql.QUANTITEACTIF.value
         self.capital_total = enumsql.CAPITAL_TOTAL.value
@@ -36,7 +36,7 @@ class TradingDatabase:
                 {} TEXT,
                 {} REAL
             )
-        '''.format(self.prix,self.date,self.quantite))
+        '''.format(self.quantitepricipal,self.date,self.quantite))
         self.conn.commit()
 
     def initialize_portfolio(self):
@@ -59,12 +59,12 @@ class TradingDatabase:
         '''.format(self.capital_total,capital_total, self.asset1), (quantity_asset1,self.asset2, quantity_asset2))
         self.conn.commit()
 
-    def add_order(self, price, quantity,date=datetime.now().strftime("%Y-%m-%d %H:%M:%S")):
+    def add_order(self, quantity1, quantity2,date=datetime.now().strftime("%Y-%m-%d %H:%M:%S")):
         cursor = self.conn.cursor()
         cursor.execute('''
             INSERT INTO orders ({}, {}, {})
             VALUES (?, ?, ?)
-        '''.format(self.prix,self.date,self.quantite), (price, date, quantity))
+        '''.format(self.quantitepricipal,self.date,self.quantite), (quantity1, date, quantity2))
         self.conn.commit()
 
     def delete_order(self, order_id):
@@ -78,7 +78,7 @@ class TradingDatabase:
         cursor = self.conn.cursor()
         cursor.execute('''
             UPDATE orders SET {} = ?, {} = ? WHERE id = ?
-        '''.format(self.prix,self.quantite), (new_price, new_quantity, order_id))
+        '''.format(self.quantitepricipal,self.quantite), (new_price, new_quantity, order_id))
         self.conn.commit()
 
     def close_connection(self):

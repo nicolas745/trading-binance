@@ -3,8 +3,10 @@ from binance.streams import BinanceSocketManager
 import time
 import asyncio
 import threading
+from sql.trading import TradingDatabase
 from flask_socketio import SocketIO
 import os
+from bottraiding.bot import bot
 from classenum.env import configenv
 from classenum.sql import enumsql
 class stream:
@@ -23,9 +25,11 @@ class stream:
         client = await AsyncClient.create(api_key=self.client.API_KEY, api_secret=self.client.API_SECRET)
         bm = BinanceSocketManager(client)
         ts = bm.trade_socket(f"{os.getenv(configenv.MONEY_ECHANGE.value)}{os.getenv(configenv.MONEY_PRINCIPAL.value)}")  # Vous pouvez également essayer bm.futures_user_socket()
+        db = TradingDatabase()
         async with ts as tscm:
-            while True:
+            #while True:
                 time.sleep(5)
                 res = await tscm.recv()
-                self.data = {enumsql.QUANTITEPRINCIPAL.value:res['p']}
                 self.socketio.emit("prix",res['p'])
+                bot(res,db,self.client).start()
+                

@@ -23,7 +23,8 @@ class panel():
                if(request.form.get("add")):
                     trading.add_order(
                          request.form.get(enumsql.QUANTITEACTIF.value),
-                         request.form.get(enumsql.QUANTITEPRINCIPAL.value)
+                         request.form.get(enumsql.QUANTITEPRINCIPAL.value),
+                         request.form.get(enumsql.DATE.value)
                     )
                args={
                     "page":"order.html",
