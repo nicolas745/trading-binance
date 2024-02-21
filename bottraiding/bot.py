@@ -2,10 +2,10 @@ from sql.trading import TradingDatabase
 from classenum.sql import enumsql
 from classenum.env import configenv
 from datetime import datetime
-from binance.client import Client
+from binance.client import AsyncClient
 
 class bot:
-    def __init__(self, data, db:TradingDatabase,client:Client) -> None:
+    def __init__(self, data, db:TradingDatabase,client:AsyncClient) -> None:
         self.db = db
         self.client = client
         self.data = {}
@@ -23,3 +23,4 @@ class bot:
             calcprix = prix * pow(1 + 0.05 / (365 * 24 * 60 * 60), timedif)
             calcprix, float(self.data["prix"]), float(self.data["prix"]) / calcprix
         print(self.client.get_simple_earn_account(),self.client.API_KEY,self.client.API_SECRET)
+        exit()

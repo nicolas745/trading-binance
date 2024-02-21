@@ -1,16 +1,14 @@
 import os
 from binance.client import Client
-
 from .spot import spot
 from .simpleearn import simple_earn
 from .stream import stream
 from classenum.env import configenv
-from dotenv import load_dotenv
-load_dotenv()
 from flask_socketio import SocketIO
 class Binance:
     def __init__(self) -> None:
-        self.testnet = bool(os.getenv(configenv.TESTNET.value))
+        self.testnet = os.getenv(configenv.TESTNET.value).upper()!="FALSE"
+        print(self.testnet,os.getenv(configenv.TESTNET.value))
         if self.testnet:
             self.api_secret = os.getenv(configenv.TESTNET_API_SECRET.value)
             self.api_key = os.getenv(configenv.TESTNET_API_KEY.value)

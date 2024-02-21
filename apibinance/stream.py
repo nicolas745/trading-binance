@@ -27,9 +27,8 @@ class stream:
         ts = bm.trade_socket(f"{os.getenv(configenv.MONEY_ECHANGE.value)}{os.getenv(configenv.MONEY_PRINCIPAL.value)}")  # Vous pouvez également essayer bm.futures_user_socket()
         db = TradingDatabase()
         async with ts as tscm:
-            #while True:
+            while True:
                 time.sleep(5)
                 res = await tscm.recv()
                 self.socketio.emit("prix",res['p'])
                 bot(res,db,self.client).start()
-                
