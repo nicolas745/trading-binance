@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="/static/socket.io.min.js"></script>
+    <script>
+        const socket = io();
+    </script>
+    <p>prix actuel : <span id="prix"></span></p>
+    <table>
+        <tr>
+            <td>
+                id
+            </td>
+            <td>
+                date/heur achat
+            </td>
+            <td>
+                prix achat
+            </td>
+            <td>
+                benefice - penalité
+            </td>
+            <td>
+                button sell
+            </td>
+            <td>
+                edit
+            </td>
+        </tr>
+        <tr tal:attributes="id order.id" tal:repeat="order orders">
+            <td tal:replace="order.timebuy" ></td>
+            <td tal:replace="order.pricebuy"></td>
+            <td tal:replace="order.diff" ></td>
+            <td>
+                <button></button>
+            </td>
+        </tr>
+        <script>
+            socket.on("prix",(prix)=>{
+                document.getElementById("prix").innerText = prix
+            })
+        </script>
+    </table>
+</body>
+</html>

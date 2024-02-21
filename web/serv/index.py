@@ -12,6 +12,9 @@ import threading
 class index():
     def __init__(self,app:Flask,socketio:SocketIO) -> None:
         self.passwd = None
+        self.time=True
+        t = threading.Thread(target=self.passwdtime)
+        t.start()
         @app.get("/")
         def getlogin():
             session['user']=1
@@ -35,8 +38,7 @@ class index():
             gpg = gnupg.GPG()
             self.passwd=self.generer_chaine(1000)
             encrypted_data=gpg.encrypt(self.passwd,os.getenv(configenv.FOOTPRINTGPG.value))
-            t = threading.Thread(target=self.passwdtime)
-            t.start()
+            self.time = False
             return str(encrypted_data)
     def generer_chaine(self,longueur):
         # Définir les caractères spéciaux
@@ -47,5 +49,9 @@ class index():
         chaine = ''.join(random.choice(tous_caracteres) for _ in range(longueur))
         return chaine
     async def passwdtime(self):
-        time.sleep(60)
-        self.passwd = None
+        while(True):
+            while(self.timer):
+                pass
+            self.time = True
+            time.sleep(60)
+            self.passwd = None
