@@ -21,14 +21,15 @@ class stream:
         loop.run_until_complete(self.updateprix())
     def getdata(self):
         return self.data
-    async def updateprix(self):
-        client = await AsyncClient.create(api_key=self.client.API_KEY, api_secret=self.client.API_SECRET)
+    def updateprix(self):
+        client = AsyncClient.create(api_key=self.client.API_KEY, api_secret=self.client.API_SECRET)
         bm = BinanceSocketManager(client)
         ts = bm.trade_socket(f"{os.getenv(configenv.MONEY_ECHANGE.value)}{os.getenv(configenv.MONEY_PRINCIPAL.value)}")  # Vous pouvez également essayer bm.futures_user_socket()
         db = TradingDatabase()
-        async with ts as tscm:
+        with ts as tscm:
             while True:
-                time.sleep(5)
-                res = await tscm.recv()
+                time.sleep(1)
+                res = tscm.recv()
+                print(res)
                 self.socketio.emit("prix",res['p'])
                 bot(res,db,self.client).start()

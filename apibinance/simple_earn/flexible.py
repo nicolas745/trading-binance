@@ -8,7 +8,6 @@ class flexible:
         for flex in self.getmyposition()["rows"]:
             if(flex['asset']==monney.upper()):
                 return flex["totalAmount"]
-        return 
     def retir(self, crypto, valeur):
         data = self.getmyposition()
         for position in data["rows"]:
@@ -18,11 +17,11 @@ class flexible:
                 return res["success"]=="true"
         return False
     def ajouter(self,crypto,valeur):
-        data = self.getdispo()
+        data = self.getmyposition()
         for donne in data["rows"]:
             if donne["asset"] == crypto:
                 productId = donne["productId"]
                 if float(donne["minPurchaseAmount"]) > valeur:
-                    return False
-        res=self.client.subscribe_simple_earn_flexible_product(amount=0.1, product_id=productId)
-        return res["success"]
+                    res=self.client.subscribe_simple_earn_flexible_product(amount=valeur, product_id=productId)
+                    return res["success"]=="true"
+        return False

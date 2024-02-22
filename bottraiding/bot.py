@@ -16,12 +16,16 @@ class bot:
 
     def start(self):
         myspot = spot(self.client)
-        myean = simple_earn(self.client)
         comptespot = {
             configenv.MONEY_ECHANGE.value:myspot.get_balances().getactifechange(),
             configenv.MONEY_PRINCIPAL.value:myspot.get_balances().getactifprincal()
         }
-        #myspot.get_balances()
+        #myearn = simple_earn(self.client)
+        #comptflexible = {
+        #    configenv.MONEY_ECHANGE.value:myearn.getflexible().getmyposition(),
+        #    configenv.MONEY_PRINCIPAL.value:myearn.getflexible()
+        #}
+        ##myspot.get_balances()
         #orders = self.db.get_all_orders()
         #compte = {}
         #compteearn={}

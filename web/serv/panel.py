@@ -82,8 +82,7 @@ class panel():
                "orders":traide.get_all_orders(),
                configenv.MONEY_ECHANGE.name:os.getenv(configenv.MONEY_ECHANGE.value),
                configenv.MONEY_PRINCIPAL.name:os.getenv(configenv.MONEY_PRINCIPAL.value),
-               "compte":traide.get_portfolio_data(),
-               enumsql.CAPITAL_TOTAL.name:enumsql.CAPITAL_TOTAL.value
+               "compte":traide.get_portfolio_data()
           }|self.stream.getdata()
           for name in enumsql._member_names_:
                args[name]= enumsql[name].value

@@ -11,7 +11,6 @@ class TradingDatabase:
         self.quantitepricipal = enumsql.QUANTITEPRINCIPAL.value
         self.date = enumsql.DATE.value
         self.quantite = enumsql.QUANTITEACTIF.value
-        self.capital_total = enumsql.CAPITAL_TOTAL.value
         self.conn = sqlite3.connect(database_name)
         self.create_tables()
         self.initialize_portfolio()
@@ -23,10 +22,9 @@ class TradingDatabase:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 {} REAL,
                 {} REAL,
-                {} REAL,
                 {} TEXT
             )
-        '''.format(self.capital_total,self.asset1,self.asset2,self.ordertime))
+        '''.format(self.asset1,self.asset2,self.ordertime))
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS orders (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -44,9 +42,9 @@ class TradingDatabase:
 
         if count == 0:
             cursor.execute('''
-                INSERT INTO portfolio ({}, {}, {},{})
-                VALUES (?, ?, ?,?)
-            '''.format(self.capital_total,self.asset1,self.asset2,self.ordertime), (0, 0, 0,datetime.now().strftime("%Y-%m-%dT%H:%M")))
+                INSERT INTO portfolio ( {}, {},{})
+                VALUES ( ?, ?,?)
+            '''.format(self.asset1,self.asset2,self.ordertime), (0, 0,datetime.now().strftime("%Y-%m-%dT%H:%M")))
             self.conn.commit()
 
     def edit_portfolio_data(self,ordertime):
@@ -56,12 +54,12 @@ class TradingDatabase:
             SET {}=?
         '''.format(self.ordertime), (ordertime))
         self.conn.commit()
-    def edit_portfolio(self, capital_total, asset1, asset2,ordertime):
+    def edit_portfolio(self, asset1, asset2,ordertime):
         cursor = self.conn.cursor()
         cursor.execute('''
             UPDATE portfolio
             SET {} = ?, {} = ?, {} = ?, {} = ? 
-        '''.format(self.capital_total, self.asset1, self.asset2, self.ordertime), (capital_total, asset1, asset2,ordertime))
+        '''.format(self.asset1, self.asset2, self.ordertime), (asset1, asset2,ordertime))
         self.conn.commit()
     def add_order(self, quantity1, quantity2,date=datetime.now().strftime("%Y-%m-%dT%H:%M")):
         cursor = self.conn.cursor()
