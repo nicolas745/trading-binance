@@ -1,51 +1,48 @@
     <p>prix actuel : <span id="prix"></span></p>
-    <table>
-        <tr>
-            <td>
-                id
-            </td>
-            <td>
-                date/heur achat
-            </td>
-            <td tal:content="MONEY_PRINCIPAL">
-            </td>
-            <td tal:content="MONEY_ECHANGE">
-            </td>
-            <td>
-                benefice - penalité
-            </td>
-            <td>
-                button sell
-            </td>
-            <td>
-                suprimer
-            </td>
-            <td>
-                edit
-            </td>
-        </tr>
-        <tr tal:attributes="id order.id" tal:repeat="order orders">
-            <td tal:content="order.id"></td>
-            <td tal:content="order[DATE]"></td>
-            <td tal:content="order[QUANTITEACTIF]"></td>
-            <td tal:content="order[QUANTITEPRINCIPAL]"></td>
-            <td>
-                <button>sell</button>
-            </td>
-            <td>
-                <button>del</button>
-            </td>
-            <td>
-                <button>edit</button>
-            </td>
-        </tr>
-    </table>
     <form method="post">
-        <p>quantié <span tal:content="MONEY_PRINCIPAL"></span></p><input id="prix1" tal:attributes="name QUANTITEPRINCIPAL">
-        <p>quntité <span tal:content="MONEY_ECHANGE"></span></p><input tal:attributes="name QUANTITEACTIF">
-        <p>date</p><input type="datetime-local" tal:attributes="name DATE">
-        <input type="submit" value="ajouter" name="add">
+        <table>
+            <tr>
+                <td>
+                    id
+                </td>
+                <td>
+                    date/heur achat
+                </td>
+                <td tal:content="MONEY_PRINCIPAL">
+                </td>
+                <td tal:content="MONEY_ECHANGE">
+                </td>
+                <td>
+                    benefice - penalité
+                </td>
+                <td>
+                    button sell
+                </td>
+                <td>
+                    suprimer
+                </td>
+                <td>
+                    edit
+                </td>
+            </tr>
+            <tr tal:attributes="id order.id" tal:repeat="order orders">
+                <td tal:content="order.id"></td>
+                <td tal:content="order[DATE]"></td>
+                <td tal:content="order[QUANTITEACTIF]"></td>
+                <td tal:content="order[QUANTITEPRINCIPAL]"></td>
+                <td>
+                    <button tal:attributes="value order.id" name="sell">sell</button>
+                </td>
+                <td>
+                    <button tal:attributes="value order.id" name="del">del</button>
+                </td>
+                <td>
+                    <button tal:attributes="value order.id" name="edit">edit</button>
+                </td>
+            </tr>
+        </table>
     </form>
+    {% include 'www/edit.html' %}
     <p>buy</p>
     <form method="post">
         <p>prix <p tal:replace="MONEY_PRINCIPAL"></p><input>

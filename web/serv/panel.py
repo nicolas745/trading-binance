@@ -8,13 +8,37 @@ from classenum.sql import enumsql
 from sql.trading import TradingDatabase
 class panel():
      def __init__(self,app:Flask,socket:SocketIO) -> None:
-          self.stream=Binance().get_stream(socketio=socket)
+          self.binance = Binance()
+          self.stream=self.binance.get_stream(socketio=socket)
           @app.get("/panel")
           def panel():
                if(not session.get("user")):
                     return redirect("/")
                args = {
                     "page":"panel.html"
+               }
+               return self.misepage(**args)
+          @app.get("/<idorder>/edit")
+          def getedit(idorder):
+               if(not session.get("user")):
+                    return redirect("/")
+               args = {
+                    "page":"edit.html"
+               }
+               return self.misepage(**args)
+          @app.post("/<idorder>/edit")
+          def postedit(idorder):
+               if(request.form.get("add")):
+                   trading=TradingDatabase()
+                   trading.modify_order(
+                         idorder,
+                         request.form.get(enumsql.QUANTITEACTIF.value),
+                         request.form.get(enumsql.QUANTITEPRINCIPAL.value),
+                    ) 
+               if(not session.get("user")):
+                    return redirect("/")
+               args = {
+                    "page":"edit.html"
                }
                return self.misepage(**args)
           @app.post("/order")
@@ -26,6 +50,19 @@ class panel():
                          request.form.get(enumsql.QUANTITEPRINCIPAL.value),
                          request.form.get(enumsql.DATE.value)
                     )
+               if(request.form.get("edit")):
+                    return redirect("/"+request.form.get("edit")+"/edit")
+               if(request.form.get("sell")):
+                    sell=trading.get_order(request.form.get("sell"))
+                    if sell:
+                         self.binance.get_earn().getflexible().retir()
+                         try:
+                              self.binance.get_spot().sell_market(sell[0][enumsql.QUANTITEACTIF.value])
+                              trading.delete_order(sell['id'])
+                         except:
+                              pass
+               if(request.form.get("del")):
+                    trading.delete_order(request.form.get("del"))
                args={
                     "page":"order.html",
                }

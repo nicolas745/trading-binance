@@ -8,7 +8,6 @@ from flask_socketio import SocketIO
 class Binance:
     def __init__(self) -> None:
         self.testnet = os.getenv(configenv.TESTNET.value).upper()!="FALSE"
-        print(self.testnet,os.getenv(configenv.TESTNET.value))
         if self.testnet:
             self.api_secret = os.getenv(configenv.TESTNET_API_SECRET.value)
             self.api_key = os.getenv(configenv.TESTNET_API_KEY.value)
