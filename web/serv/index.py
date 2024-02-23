@@ -49,7 +49,7 @@ class index():
         return chaine
     async def passwdtime(self):
         while(True):
-            while(self.timer):
+            while(self.time):
                 pass
             self.time = True
             time.sleep(60)

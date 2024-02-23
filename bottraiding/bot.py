@@ -21,11 +21,11 @@ class bot:
             configenv.MONEY_PRINCIPAL.value:myspot.get_balances().getactifprincal()
         }
         myearn = simple_earn(self.client)
-        #comptflexible = {
-        #    configenv.MONEY_ECHANGE.value:myearn.getflexible().getvaleurmoneyechange(),
-        #    configenv.MONEY_PRINCIPAL.value:myearn.getflexible().getvaleurmoneyprincipal()
-        #}
+        comptflexible = {
+            configenv.MONEY_ECHANGE.value:myearn.getflexible().getvaleurmoneyechange(),
+            configenv.MONEY_PRINCIPAL.value:myearn.getflexible().getvaleurmoneyprincipal()
+        }
         user=self.db.get_portfolio_data()
         orders = self.db.get_all_orders()
-        for order in orders:
-            print(user)
+        #for order in orders:
+        #    print(user)

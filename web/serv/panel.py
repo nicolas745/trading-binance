@@ -72,18 +72,17 @@ class panel():
                          request.form.get(enumsql.DATE.value)
                     )
                if(request.form.get("buy")):
-                    pass
+                    quantite = 0
+                    self.binance.get_earn().getflexible().retirprincipal(quantite)
+                    self.binance.get_spot().buy_market(quantite)
                if(request.form.get("edit")):
                     return redirect("/"+request.form.get("edit")+"/edit")
                if(request.form.get("sell")):
                     sell=trading.get_order(request.form.get("sell"))
                     if sell:
                          self.binance.get_earn().getflexible().retir()
-                         try:
-                              self.binance.get_spot().sell_market(sell[0][enumsql.QUANTITEACTIF.value])
-                              trading.delete_order(sell['id'])
-                         except:
-                              pass
+                         self.binance.get_spot().sell_market(sell[0][enumsql.QUANTITEACTIF.value])
+                         trading.delete_order(sell['id'])
                if(request.form.get("del")):
                     trading.delete_order(request.form.get("del"))
                args={
@@ -112,5 +111,4 @@ class panel():
           for name in enumsql._member_names_:
                args[name]= enumsql[name].value
           traide.close_connection()
-          print(args)
           return PageTemplate(body=render_template("index_admin.html",**args)).render(**args)

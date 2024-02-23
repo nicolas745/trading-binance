@@ -31,5 +31,11 @@ class flexible:
                     res=self.client.subscribe_simple_earn_flexible_product(amount=valeur, product_id=productId)
                     return res["success"]=="true"
         return False
-    def retirprincipal():
-        pass
+    def retirprincipal(self,quantite):
+        self.retir("{}".format(os.getenv(configenv.MONEY_PRINCIPAL.value)),quantite)
+    def ajouterprincipal(self,quantite):
+        self.ajouter("{}".format(os.getenv(configenv.MONEY_PRINCIPAL.value)),quantite)
+    def retirechange(self,quantite):
+        self.retir("{}".format(os.getenv(configenv.MONEY_ECHANGE.value)),quantite)
+    def ajouterechange(self,quantite):
+        self.ajouter("{}".format(os.getenv(configenv.MONEY_ECHANGE.value)),quantite)
