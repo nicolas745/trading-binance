@@ -10,6 +10,7 @@ class panel():
      def __init__(self,app:Flask,socket:SocketIO) -> None:
           self.binance = Binance()
           self.stream=self.binance.get_stream(socketio=socket)
+          self.stream.start()
           @app.get("/panel")
           def getpanel():
                if(not session.get("user")):
