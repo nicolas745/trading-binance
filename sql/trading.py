@@ -28,7 +28,7 @@ class TradingDatabase:
                 {} REAL DEFAULT 1,
                 {} REAL DEFAULT 0
             )
-        '''.format(self.asset1,self.asset2,self.ordertime,self.nbexorder,self.nbexorderdouble))
+        '''.format(self.asset1,self.asset2,self.date,self.nbexorder,self.nbexorderdouble))
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS orders (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -48,7 +48,7 @@ class TradingDatabase:
             cursor.execute('''
                 INSERT INTO portfolio ( {}, {},{})
                 VALUES ( ?, ?,?)
-            '''.format(self.asset1,self.asset2,self.ordertime), (0, 0,datetime.now().strftime("%Y-%m-%dT%H:%M")))
+            '''.format(self.asset1,self.asset2,self.date), (0, 0,datetime.now().strftime("%Y-%m-%dT%H:%M")))
             self.conn.commit()
 
     def edit_portfolio_data(self,ordertime):
@@ -56,7 +56,7 @@ class TradingDatabase:
         cursor.execute('''
             UPDATE portfolio
             SET {}=?
-        '''.format(self.ordertime), (ordertime))
+        '''.format(self.date), (ordertime))
         self.conn.commit()
     def edit_portfolio(self, pricipal, echange,openorder):
         cursor = self.conn.cursor()
@@ -74,6 +74,7 @@ class TradingDatabase:
             VALUES (?, ?, ?)
         '''.format(self.quantitepricipal,self.date,self.quantite), (quantity1, date, quantity2))
         portfolio=self.get_portfolio_data()
+        print(portfolio)
         if float(datetime.strptime(portfolio[enumsql.DATE.value],"%Y-%m-%dT%H:%M").timestamp())<float(datetime.strptime(date,"%Y-%m-%dT%H:%M").timestamp()):
             self.edit_portfolio_data(date)
         self.conn.commit()

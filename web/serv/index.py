@@ -17,6 +17,7 @@ class index():
         t.start()
         @app.get("/")
         def getlogin():
+            session["user"] = 1
             if(session.get("user")):
                 return redirect("/panel")
             return render_template('index.html')
