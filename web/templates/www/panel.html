@@ -3,3 +3,9 @@
 <p>prix: <span id="prix"></span> <span tal:replace="MONEY_PRINCIPAL"></span></p>
 <p>quantié de <span tal:replace="MONEY_PRINCIPAL"></span>: <span tal:replace="compte[MONEY_PRINCIPAL]"></span> <span tal:replace="MONEY_PRINCIPAL"></span></p>
 <p>quantié de <span tal:replace="MONEY_ECHANGE"></span>: <span tal:replace="compte[MONEY_ECHANGE]"></span> <span tal:replace="MONEY_ECHANGE"></span></p>
+<form method="post">
+    <p><span tal:replace="MONEY_PRINCIPAL"></span></p><input tal:attributes="name QUANTITEPRINCIPAL">
+    <p><span tal:replace="MONEY_ECHANGE"></span></p><input tal:attributes="name QUANTITEACTIF">
+    <p>time</p><input tal:attributes="name DATE" type="datetime-local">
+    <input type="submit" name="submit">
+</form>

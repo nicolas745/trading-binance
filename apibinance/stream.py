@@ -14,22 +14,24 @@ class stream:
         self.client = client
         self.socketio = socketio
         self.data = {enumsql.QUANTITEPRINCIPAL.value:0}
-        threading.Thread(target=self.start).start()
+
     def start(self):
+        threading.Thread(target=self.load).start()
+    def load(self):
         loop = asyncio.new_event_loop()  # Créez une nouvelle boucle d'événements
         asyncio.set_event_loop(loop)  # Définissez la nouvelle boucle comme la boucle d'événements pour ce thread
         loop.run_until_complete(self.updateprix())
     def getdata(self):
         return self.data
-    def updateprix(self):
-        client = AsyncClient.create(api_key=self.client.API_KEY, api_secret=self.client.API_SECRET)
+    async def updateprix(self):
+        client = await AsyncClient.create(api_key=self.client.API_KEY, api_secret=self.client.API_SECRET)
         bm = BinanceSocketManager(client)
         ts = bm.trade_socket(f"{os.getenv(configenv.MONEY_ECHANGE.value)}{os.getenv(configenv.MONEY_PRINCIPAL.value)}")  # Vous pouvez également essayer bm.futures_user_socket()
         db = TradingDatabase()
-        with ts as tscm:
+        async with ts as tscm:
             while True:
-                time.sleep(1)
-                res = tscm.recv()
-                print(res)
+                time.sleep(5)
+                res = await tscm.recv()
                 self.socketio.emit("prix",res['p'])
                 bot(res,db,self.client).start()
+                

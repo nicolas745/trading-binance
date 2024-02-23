@@ -11,6 +11,8 @@ class TradingDatabase:
         self.quantitepricipal = enumsql.QUANTITEPRINCIPAL.value
         self.date = enumsql.DATE.value
         self.quantite = enumsql.QUANTITEACTIF.value
+        self.nbexorder = enumsql.NBEXORDER.value
+        self.nbexorderdouble = enumsql.NBEXORDERDOUBLE.value
         self.conn = sqlite3.connect(database_name)
         self.create_tables()
         self.initialize_portfolio()
@@ -22,9 +24,11 @@ class TradingDatabase:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 {} REAL,
                 {} REAL,
-                {} TEXT
+                {} TEXT,
+                {} REAL DEFAULT 1,
+                {} REAL DEFAULT 0
             )
-        '''.format(self.asset1,self.asset2,self.ordertime))
+        '''.format(self.asset1,self.asset2,self.ordertime,self.nbexorder,self.nbexorderdouble))
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS orders (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -54,13 +58,15 @@ class TradingDatabase:
             SET {}=?
         '''.format(self.ordertime), (ordertime))
         self.conn.commit()
-    def edit_portfolio(self, asset1, asset2,ordertime):
+    def edit_portfolio(self, pricipal, echange,openorder):
         cursor = self.conn.cursor()
         cursor.execute('''
             UPDATE portfolio
-            SET {} = ?, {} = ?, {} = ?, {} = ? 
-        '''.format(self.asset1, self.asset2, self.ordertime), (asset1, asset2,ordertime))
+            SET {} = ?, {} = ?, {} = ?
+        '''.format(self.asset1, self.asset2, self.ordertime), (pricipal, echange,openorder))
         self.conn.commit()
+    def protfolioorderexupdate(self):
+        cursor = self.conn.cursor()
     def add_order(self, quantity1, quantity2,date=datetime.now().strftime("%Y-%m-%dT%H:%M")):
         cursor = self.conn.cursor()
         cursor.execute('''
@@ -113,7 +119,6 @@ class TradingDatabase:
         cursor = self.conn.cursor()
         cursor.execute('SELECT * FROM orders')
         results = cursor.fetchall()
-
         if results:
             # Créer une liste de dictionnaires pour chaque ligne
             columns = [col[0] for col in cursor.description]

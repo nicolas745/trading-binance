@@ -11,7 +11,23 @@ class panel():
           self.binance = Binance()
           self.stream=self.binance.get_stream(socketio=socket)
           @app.get("/panel")
-          def panel():
+          def getpanel():
+               if(not session.get("user")):
+                    return redirect("/")
+               args = {
+                    "page":"panel.html"
+               }
+               return self.misepage(**args)
+          @app.post("/panel")
+          def postpanel():
+               if(request.form.get("submit")):
+                    trading=TradingDatabase()
+                    trading.edit_portfolio(
+                         request.form.get(enumsql.QUANTITEPRINCIPAL.value),
+                         request.form.get(enumsql.QUANTITEACTIF.value),
+                         request.form.get(enumsql.DATE.value)
+                    )
+                    trading.close_connection()
                if(not session.get("user")):
                     return redirect("/")
                args = {
@@ -28,6 +44,8 @@ class panel():
                return self.misepage(**args)
           @app.post("/<idorder>/edit")
           def postedit(idorder):
+               if(not session.get("user")):
+                    return redirect("/")
                if(request.form.get("add")):
                    trading=TradingDatabase()
                    trading.modify_order(
@@ -35,6 +53,7 @@ class panel():
                          request.form.get(enumsql.QUANTITEACTIF.value),
                          request.form.get(enumsql.QUANTITEPRINCIPAL.value),
                     ) 
+                   trading.close()
                if(not session.get("user")):
                     return redirect("/")
                args = {
@@ -42,7 +61,9 @@ class panel():
                }
                return self.misepage(**args)
           @app.post("/order")
-          def getorder():
+          def postorder():
+               if(not session.get("user")):
+                    return redirect("/")
                trading=TradingDatabase()
                if(request.form.get("add")):
                     trading.add_order(
@@ -50,6 +71,8 @@ class panel():
                          request.form.get(enumsql.QUANTITEPRINCIPAL.value),
                          request.form.get(enumsql.DATE.value)
                     )
+               if(request.form.get("buy")):
+                    pass
                if(request.form.get("edit")):
                     return redirect("/"+request.form.get("edit")+"/edit")
                if(request.form.get("sell")):
@@ -69,7 +92,9 @@ class panel():
                trading.close_connection()
                return self.misepage(**args)
           @app.get("/order")
-          def order():
+          def getorder():
+               if(not session.get("user")):
+                    return redirect("/")
                if(not session.get("user")):
                     return redirect("/")
                args={
@@ -87,4 +112,5 @@ class panel():
           for name in enumsql._member_names_:
                args[name]= enumsql[name].value
           traide.close_connection()
+          print(args)
           return PageTemplate(body=render_template("index_admin.html",**args)).render(**args)

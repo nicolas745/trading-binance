@@ -8,3 +8,7 @@ class configenv(Enum):
         FOOTPRINTGPG="id_gpg"
         MONEY_PRINCIPAL="money_principal"
         MONEY_ECHANGE="money_echange"
+        SSL="ssl"
+        SSLKEYFILE="sslkeyfile"
+        SSLCERFILE="sslcerfile"
+        PORT="port"

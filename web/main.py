@@ -3,6 +3,7 @@ from flask_socketio import SocketIO
 import os
 import importlib
 app = Flask(__name__)
+from classenum.env import configenv
 app.secret_key = os.urandom(24).hex()
 Socketio =SocketIO()
 Socketio.init_app(app)
@@ -23,4 +24,13 @@ class main():
                             obj(app,Socketio)
 def run():
     if __name__ == 'web.main':
-        Socketio.run(app,debug=True)
+        args = {
+            'app':app,
+            'port':os.getenv(configenv.PORT.value),
+            'debug':False
+        }
+        if os.getenv(configenv.SSL.value):
+            args['ssl_context'] = (os.getenv(configenv.SSLCERFILE.value),os.getenv(configenv.SSLKEYFILE.value))
+            Socketio.run(**args)
+        else:
+            Socketio.run(**args)
