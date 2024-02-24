@@ -48,7 +48,7 @@ class index():
             encrypt_result = subprocess.run(['gpg', '-a', '--encrypt', '--always-trust', '--recipient', fingerprint], input=self.passwd, text=True, capture_output=True)
             # encrypted_data=gpg.encrypt(self.passwd,fingerprint)
             self.time = False
-            return str(encrypt_result)
+            return str(encrypt_result.stdout)
     def generer_chaine(self,longueur):
         # Définir les caractères spéciaux
         caracteres_speciaux = string.punctuation

@@ -27,9 +27,12 @@
             </tr>
             <tr tal:attributes="id order.id" tal:repeat="order orders">
                 <td tal:content="order.id"></td>
-                <td tal:content="order[DATE]"></td>
-                <td tal:content="order[QUANTITEACTIF]"></td>
-                <td tal:content="order[QUANTITEPRINCIPAL]"></td>
+                <td tal:content="order[DATE] , class DATE , orderid order.id"></td>
+                <td tal:content="order[QUANTITEACTIF] , class MONEY_ECHANGE , orderid order.id"></td>
+                <td tal:content="order[QUANTITEPRINCIPAL] class MONEY_PRINCIPAL , orderid order.id"></td>
+                <td tal:attributes="orderid order.id">
+
+                </td>
                 <td>
                     <button tal:attributes="value order.id" name="sell">sell</button>
                 </td>
