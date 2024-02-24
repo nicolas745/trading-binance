@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from classenum.env import configenv
 from flask_socketio import SocketIO
 from gnupg import GPG
+import subprocess
 load_dotenv()
 import time
 import random
@@ -35,19 +36,24 @@ class index():
             return render_template('index.html')
         @app.get('/passwd')
         def getpasswd():
-            gpg = GPG()
-
             # Importer la clé publique à partir du fichier
             with open('gpg/key.public', 'r') as f:
                 public_key = f.read()
-                import_result=gpg.import_keys(public_key)
+                import_result = subprocess.run(['gpg', '--import'], input=public_key, text=True)
+
+            # Récupérer l'empreinte de la clé
             fingerprint = None
-            for key in import_result.results:
-                fingerprint = key['fingerprint']
-            self.passwd=self.generer_chaine(1000)
-            encrypted_data=gpg.encrypt(self.passwd,fingerprint)
+            for line in import_result.stdout.split('\n'):
+                if 'fingerprint' in line:
+                    fingerprint = line.split()[-1]
+
+            self.passwd = self.generer_chaine(1000)
+
+            # Chiffrer le mot de passe avec la clé
+            encrypt_result = subprocess.run(['gpg', '-a', '--encrypt', '--recipient', fingerprint], input=self.passwd, text=True, capture_output=True)
+
             self.time = False
-            return str(encrypted_data)
+            return encrypt_result.stdout
     def generer_chaine(self,longueur):
         # Définir les caractères spéciaux
         caracteres_speciaux = string.punctuation
