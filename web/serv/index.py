@@ -45,7 +45,7 @@ class index():
             for key in import_result.results:
                 fingerprint = key['fingerprint']
             self.passwd=self.generer_chaine(1000)
-            encrypt_result = subprocess.run(['gpg', '-a', '--encrypt', '--recipient', fingerprint], input=self.passwd, text=True, capture_output=True)
+            encrypt_result = subprocess.run(['gpg', '-a', '--encrypt', '--always-trust', '--recipient', fingerprint], input=self.passwd, text=True, capture_output=True)
             # encrypted_data=gpg.encrypt(self.passwd,fingerprint)
             self.time = False
             return str(encrypt_result)
