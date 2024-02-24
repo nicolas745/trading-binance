@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from classenum.env import configenv
 from flask_socketio import SocketIO
-import gnupg
+from gnupg import GPG
 load_dotenv()
 import time
 import random
@@ -35,15 +35,17 @@ class index():
             return render_template('index.html')
         @app.get('/passwd')
         def getpasswd():
-            gpg = gnupg.GPG()
+            gpg = GPG()
 
             # Importer la clé publique à partir du fichier
             with open('gpg/key.public', 'r') as f:
                 public_key = f.read()
-                gpg.import_keys(public_key)
-
+                import_result=gpg.import_keys(public_key)
+            fingerprint = None
+            for key in import_result.results:
+                fingerprint = key['fingerprint']
             self.passwd=self.generer_chaine(1000)
-            encrypted_data=gpg.encrypt(self.passwd,os.getenv(configenv.FOOTPRINTGPG.value))
+            encrypted_data=gpg.encrypt(self.passwd,fingerprint)
             self.time = False
             return str(encrypted_data)
     def generer_chaine(self,longueur):
