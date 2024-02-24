@@ -12,3 +12,4 @@ class configenv(Enum):
         SSLKEYFILE="sslkeyfile"
         SSLCERFILE="sslcerfile"
         PORT="port"
+        HOST="host"

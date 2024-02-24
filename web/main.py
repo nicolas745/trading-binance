@@ -27,7 +27,8 @@ def run():
         args = {
             'app':app,
             'port':os.getenv(configenv.PORT.value),
-            'debug':False
+            'debug':False,
+            'host':os.getenv(configenv.HOST.value)
         }
         if os.getenv(configenv.SSL.value):
             args['ssl_context'] = (os.getenv(configenv.SSLCERFILE.value),os.getenv(configenv.SSLKEYFILE.value))

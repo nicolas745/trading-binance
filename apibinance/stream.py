@@ -30,8 +30,8 @@ class stream:
         db = TradingDatabase()
         async with ts as tscm:
             while True:
-                time.sleep(5)
                 res = await tscm.recv()
                 self.socketio.emit("prix",res['p'])
                 bot(res,db,self.client).start()
+                time.sleep(5)
                 

@@ -36,6 +36,12 @@ class index():
         @app.get('/passwd')
         def getpasswd():
             gpg = gnupg.GPG()
+
+            # Importer la clé publique à partir du fichier
+            with open('gpg/key.public', 'r') as f:
+                public_key = f.read()
+                gpg.import_keys(public_key)
+
             self.passwd=self.generer_chaine(1000)
             encrypted_data=gpg.encrypt(self.passwd,os.getenv(configenv.FOOTPRINTGPG.value))
             self.time = False
