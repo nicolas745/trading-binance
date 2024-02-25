@@ -67,12 +67,12 @@ class TradingDatabase:
         self.conn.commit()
     def protfolioorderexupdate(self):
         cursor = self.conn.cursor()
-    def add_order(self, quantity1, quantity2,date=datetime.now().strftime("%Y-%m-%dT%H:%M")):
+    def add_order(self, quantityP, quantityA,date=datetime.now().strftime("%Y-%m-%dT%H:%M")):
         cursor = self.conn.cursor()
         cursor.execute('''
             INSERT INTO orders ({}, {}, {})
             VALUES (?, ?, ?)
-        '''.format(self.quantitepricipal,self.date,self.quantite), (quantity1, date, quantity2))
+        '''.format(self.quantitepricipal,self.date,self.quantite), (quantityP, date, quantityA))
         portfolio=self.get_portfolio_data()
         print(portfolio)
         if float(datetime.strptime(portfolio[enumsql.DATE.value],"%Y-%m-%dT%H:%M").timestamp())<float(datetime.strptime(date,"%Y-%m-%dT%H:%M").timestamp()):

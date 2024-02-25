@@ -72,9 +72,7 @@ class panel():
                          request.form.get(enumsql.DATE.value)
                     )
                if(request.form.get("buy")):
-                    quantite = 0
-                    self.binance.get_earn().getflexible().retirprincipal(quantite)
-                    self.binance.get_spot().buy_market(quantite)
+                    self.binance.get_spot().buy_market(request.form.get(os.getenv(configenv.MONEY_ECHANGE.value)),self.stream.getptix())
                if(request.form.get("edit")):
                     return redirect("/"+request.form.get("edit")+"/edit")
                if(request.form.get("sell")):
@@ -107,7 +105,7 @@ class panel():
                configenv.MONEY_ECHANGE.name:os.getenv(configenv.MONEY_ECHANGE.value),
                configenv.MONEY_PRINCIPAL.name:os.getenv(configenv.MONEY_PRINCIPAL.value),
                "compte":traide.get_portfolio_data()
-          }|self.stream.getdata()
+          }
           for name in enumsql._member_names_:
                args[name]= enumsql[name].value
           traide.close_connection()

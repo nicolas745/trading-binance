@@ -13,7 +13,7 @@ class stream:
     def __init__(self, client:Client,socketio:SocketIO)  -> None:
         self.client = client
         self.socketio = socketio
-        self.data = {enumsql.QUANTITEPRINCIPAL.value:0}
+        self.prix = 0
 
     def start(self):
         threading.Thread(target=self.load).start()
@@ -21,8 +21,6 @@ class stream:
         loop = asyncio.new_event_loop()  # Créez une nouvelle boucle d'événements
         asyncio.set_event_loop(loop)  # Définissez la nouvelle boucle comme la boucle d'événements pour ce thread
         loop.run_until_complete(self.updateprix())
-    def getdata(self):
-        return self.data
     async def updateprix(self):
         client = await AsyncClient.create(api_key=self.client.API_KEY, api_secret=self.client.API_SECRET)
         bm = BinanceSocketManager(client)
@@ -32,6 +30,9 @@ class stream:
             while True:
                 res = await tscm.recv()
                 self.socketio.emit("prix",res['p'])
+                self.prix = res['p']
                 #bot(res,db,self.client).start()
                 time.sleep(5)
-                
+    def getptix(self):
+        return self.prix
+        
