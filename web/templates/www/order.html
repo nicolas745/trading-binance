@@ -13,7 +13,16 @@
                 <td tal:content="MONEY_ECHANGE">
                 </td>
                 <td>
-                    benefice - penalité
+                    prix buy
+                </td>
+                <td>
+                    new prix
+                </td>
+                <td>
+                    benefice {{MONEY_PRINCIPAL}}
+                </td>
+                <td>
+                    benefice - penalité en %
                 </td>
                 <td>
                     button sell
@@ -27,12 +36,13 @@
             </tr>
             <tr tal:attributes="id order.id" tal:repeat="order orders">
                 <td tal:content="order.id"></td>
-                <td tal:content="order[DATE] , class DATE , orderid order.id"></td>
-                <td tal:content="order[QUANTITEACTIF] , class MONEY_ECHANGE , orderid order.id"></td>
-                <td tal:content="order[QUANTITEPRINCIPAL] class MONEY_PRINCIPAL , orderid order.id"></td>
-                <td tal:attributes="orderid order.id">
-
-                </td>
+                <td tal:attributes="class DATE ; orderid order.id" tal:content="order[DATE]"></td>
+                <td tal:attributes="class MONEY_PRINCIPAL ; orderid order.id" tal:content="order[QUANTITEACTIF]"></td>
+                <td tal:attributes="class  MONEY_ECHANGE; orderid order.id" tal:content="order[QUANTITEPRINCIPAL]"></td>
+                <td class="prixbuy" tal:attributes="orderid order.id" tal:content="order[QUANTITEACTIF]/order[QUANTITEPRINCIPAL]"></td>
+                <td class="newprix" tal:attributes="orderid order.id"></td>
+                <td class="benef" tal:attributes="orderid order.id"></td>
+                <td class="benfpourcentage" tal:attributes="orderid order.id"></td>
                 <td>
                     <button tal:attributes="value order.id" name="sell">sell</button>
                 </td>

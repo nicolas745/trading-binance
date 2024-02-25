@@ -9,6 +9,7 @@ class Binance:
     def __init__(self) -> None:
         self.testnet = os.getenv(configenv.TESTNET.value).upper()!="FALSE"
         if self.testnet:
+            print("dd")
             self.api_secret = os.getenv(configenv.TESTNET_API_SECRET.value)
             self.api_key = os.getenv(configenv.TESTNET_API_KEY.value)
         else:

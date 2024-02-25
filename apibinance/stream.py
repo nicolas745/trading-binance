@@ -32,6 +32,6 @@ class stream:
             while True:
                 res = await tscm.recv()
                 self.socketio.emit("prix",res['p'])
-                bot(res,db,self.client).start()
+                #bot(res,db,self.client).start()
                 time.sleep(5)
                 

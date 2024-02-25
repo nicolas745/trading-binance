@@ -30,7 +30,7 @@ def run():
             'debug':False,
             'host':os.getenv(configenv.HOST.value)
         }
-        if os.getenv(configenv.SSL.value):
+        if os.getenv(configenv.SSL.value)!="false":
             args['ssl_context'] = (os.getenv(configenv.SSLCERFILE.value),os.getenv(configenv.SSLKEYFILE.value))
             Socketio.run(**args)
         else:
