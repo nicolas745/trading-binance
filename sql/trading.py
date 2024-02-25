@@ -58,7 +58,7 @@ class TradingDatabase:
             SET {}=?
         '''.format(self.date), (ordertime))
         self.conn.commit()
-    def edit_portfolio(self, pricipal, echange,openorder):
+    def edit_portfolio(self, pricipal, echange,openorder=datetime.now().strftime("%Y-%m-%dT%H:%M")):
         cursor = self.conn.cursor()
         cursor.execute('''
             UPDATE portfolio

@@ -26,7 +26,6 @@ class panel():
                     trading.edit_portfolio(
                          request.form.get(enumsql.QUANTITEPRINCIPAL.value),
                          request.form.get(enumsql.QUANTITEACTIF.value),
-                         request.form.get(enumsql.DATE.value)
                     )
                     trading.close_connection()
                if(not session.get("user")):
