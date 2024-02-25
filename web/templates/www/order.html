@@ -39,7 +39,7 @@
                 <td tal:attributes="class DATE ; orderid order.id" tal:content="order[DATE]"></td>
                 <td tal:attributes="class MONEY_PRINCIPAL ; orderid order.id" tal:content="order[QUANTITEACTIF]"></td>
                 <td tal:attributes="class  MONEY_ECHANGE; orderid order.id" tal:content="order[QUANTITEPRINCIPAL]"></td>
-                <td class="prixbuy" tal:attributes="orderid order.id" tal:content="python: float(order['QUANTITEACTIF'].replace(',', '.')) / float(order['QUANTITEPRINCIPAL'].replace(',', '.'))"></td>
+                <td class="prixbuy" tal:attributes="orderid order.id"></td>
                 <td class="newprix" tal:attributes="orderid order.id"></td>
                 <td class="benef" tal:attributes="orderid order.id"></td>
                 <td class="benfpourcentage" tal:attributes="orderid order.id"></td>

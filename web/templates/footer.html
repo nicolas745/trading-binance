@@ -9,6 +9,7 @@
             prixbuy = Qpricipal/Qactif
             newprix = prixbuy*Math.pow(1+0.06/(365*24*60*60),(new Date().getTime()-new Date(date).getTime())/1000)
             document.querySelectorAll(".newprix[orderid='"+element.getAttribute("orderid")+"']")[0].innerText = newprix
+            document.querySelectorAll(".prixbuy[orderid='"+element.getAttribute("orderid")+"']")[0].innerText = prixbuy
             document.querySelectorAll(".benef[orderid='"+element.getAttribute("orderid")+"']")[0].innerText = (prix-newprix)+" {{MONEY_PRINCIPAL}}"
             element.innerText = (prix-newprix)/newprix
         })
