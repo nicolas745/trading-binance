@@ -46,7 +46,12 @@ class bot:
         time=(datetime.now().timestamp()-datetime.strptime(user[self.date], "%Y-%m-%dT%H:%M").timestamp())
         if(60*60*12<time):
             buy=10
-            nborder =user[enumsql.NBEXORDER.value]
-            nborderdouble=user[enumsql.NBEXORDERDOUBLE.value]
-            newbuy=buy*pow(1.01,user[enumsql.NBEXORDERDOUBLE.value])
-            quantite = newbuy/self.data["prix"]
+            nborder =float(user[enumsql.NBEXORDER.value])
+            nborderdouble=float(user[enumsql.NBEXORDERDOUBLE.value])
+            if(nborder<nborderdouble):
+                nborder=nborder+1
+                nborderdouble=0
+            newbuy=buy*pow(1.01,nborderdouble)
+            quantite = newbuy/float(self.data["prix"])
+            spot(self.client).buy_market(quantite)
+            self.db.editportfolioorder(nborder,nborderdouble)
