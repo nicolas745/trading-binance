@@ -7,10 +7,7 @@ class TradingDatabase:
     def __init__(self, database_name='trading.db'):
         self.asset1 = os.getenv(configenv.MONEY_PRINCIPAL.value)
         self.asset2 = os.getenv(configenv.MONEY_ECHANGE.value)
-        self.ordertime= enumsql.ORDERTIME.value
-        self.quantitepricipal = enumsql.QUANTITEPRINCIPAL.value
         self.date = enumsql.DATE.value
-        self.quantite = enumsql.QUANTITEACTIF.value
         self.nbexorder = enumsql.NBEXORDER.value
         self.nbexorderdouble = enumsql.NBEXORDERDOUBLE.value
         self.conn = sqlite3.connect(database_name)
@@ -36,7 +33,7 @@ class TradingDatabase:
                 {} TEXT,
                 {} REAL
             )
-        '''.format(self.quantitepricipal,self.date,self.quantite))
+        '''.format(self.asset1,self.date,self.asset2))
         self.conn.commit()
 
     def initialize_portfolio(self):
@@ -53,10 +50,11 @@ class TradingDatabase:
 
     def edit_portfolio_data(self,ordertime):
         cursor = self.conn.cursor()
+        print(ordertime,self.date)
         cursor.execute('''
             UPDATE portfolio
             SET {}=?
-        '''.format(self.date), (ordertime))
+        '''.format(self.date), (ordertime,))
         self.conn.commit()
     def edit_portfolio(self, pricipal, echange,openorder=datetime.now().strftime("%Y-%m-%dT%H:%M")):
         cursor = self.conn.cursor()
@@ -72,11 +70,10 @@ class TradingDatabase:
         cursor.execute('''
             INSERT INTO orders ({}, {}, {})
             VALUES (?, ?, ?)
-        '''.format(self.quantitepricipal,self.date,self.quantite), (quantityP, date, quantityA))
+        '''.format(self.asset1,self.date,self.asset2), (quantityP, date, quantityA))
         portfolio=self.get_portfolio_data()
-        print(portfolio)
-        if float(datetime.strptime(portfolio[enumsql.DATE.value],"%Y-%m-%dT%H:%M").timestamp())<float(datetime.strptime(date,"%Y-%m-%dT%H:%M").timestamp()):
-            self.edit_portfolio_data(date)
+        if float(datetime.strptime(portfolio[self.date],"%Y-%m-%dT%H:%M").timestamp())<float(datetime.strptime(date,"%Y-%m-%dT%H:%M").timestamp()):
+            self.buy(quantityP,quantityA)
         self.conn.commit()
     def delete_order(self, order_id):
         cursor = self.conn.cursor()
@@ -84,12 +81,11 @@ class TradingDatabase:
             DELETE FROM orders WHERE id = ?
         ''', (order_id,))
         self.conn.commit()
-
     def modify_order(self, order_id, new_quantitypri, new_quantity):
         cursor = self.conn.cursor()
         cursor.execute('''
             UPDATE orders SET {} = ?, {} = ? WHERE id = ?
-        '''.format(self.quantitepricipal,self.quantite), (new_quantitypri, new_quantity, order_id))
+        '''.format(self.asset1,self.asset2), (new_quantitypri, new_quantity, order_id))
         self.conn.commit()
     def close_connection(self):
         self.conn.close()
@@ -107,7 +103,7 @@ class TradingDatabase:
             return None
     def get_order(self,orderid):
         cursor = self.conn.cursor()
-        cursor.execute('SELECT * FROM orders WHERE id=?',(orderid))
+        cursor.execute('SELECT * FROM orders WHERE id=?',(orderid,))
         results = cursor.fetchall()
         if results:
             # Créer une liste de dictionnaires pour chaque ligne
@@ -127,3 +123,9 @@ class TradingDatabase:
             return orders_list
         else:
             return []
+    def buy(self,principal,actif):
+        portfolio = self.get_portfolio_data()
+        self.edit_portfolio(float(portfolio[self.asset1])-float(principal),float(portfolio[self.asset2])+float(actif))
+    def sell(self,principal,actif):
+        portfolio = self.get_portfolio_data()
+        self.edit_portfolio(float(portfolio[self.asset1])+float(principal),float(portfolio[self.asset2])-float(actif))

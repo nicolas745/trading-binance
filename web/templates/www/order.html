@@ -37,8 +37,8 @@
             <tr tal:attributes="id order.id" tal:repeat="order orders">
                 <td tal:content="order.id"></td>
                 <td tal:attributes="class DATE ; orderid order.id" tal:content="order[DATE]"></td>
-                <td tal:attributes="class MONEY_PRINCIPAL ; orderid order.id" tal:content="order[QUANTITEACTIF]"></td>
-                <td tal:attributes="class  MONEY_ECHANGE; orderid order.id" tal:content="order[QUANTITEPRINCIPAL]"></td>
+                <td tal:attributes="class MONEY_PRINCIPAL ; orderid order.id" tal:content="order[MONEY_PRINCIPAL]"></td>
+                <td tal:attributes="class  MONEY_ECHANGE; orderid order.id" tal:content="order[MONEY_ECHANGE]"></td>
                 <td class="prixbuy" tal:attributes="orderid order.id"></td>
                 <td class="newprix" tal:attributes="orderid order.id"></td>
                 <td class="benef" tal:attributes="orderid order.id"></td>

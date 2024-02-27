@@ -1,10 +1,13 @@
 <p>prix</p>
 <p>capital total: <span tal:replace="'dd'"></span> <span tal:replace="MONEY_PRINCIPAL"></span></p>
 <p>prix: <span id="prix"></span> <span tal:replace="MONEY_PRINCIPAL"></span></p>
-<p>quantié de <span tal:replace="MONEY_PRINCIPAL"></span>: <span tal:replace="compte[MONEY_PRINCIPAL]"></span> <span tal:replace="MONEY_PRINCIPAL"></span></p>
-<p>quantié de <span tal:replace="MONEY_ECHANGE"></span>: <span tal:replace="compte[MONEY_ECHANGE]"></span> <span tal:replace="MONEY_ECHANGE"></span></p>
+<p>bot quantié de <span tal:replace="MONEY_PRINCIPAL"></span>: <span tal:replace="compte[MONEY_PRINCIPAL]"></span> <span tal:replace="MONEY_PRINCIPAL"></span></p>
+<p>bot quantié de <span tal:replace="MONEY_ECHANGE"></span>: <span tal:replace="compte[MONEY_ECHANGE]"></span> <span tal:replace="MONEY_ECHANGE"></span></p>
+<h2>compte sur binance</h2>
+<p>quantité <span tal:replace="MONEY_PRINCIPAL"></span> <span tal:replace="wallet['spot'][MONEY_PRINCIPAL]"></span></p>
+<p>quantité <span tal:replace="MONEY_ECHANGE"></span> <span tal:replace="wallet['spot'][MONEY_ECHANGE]"></span></p>
 <form method="post">
-    <p><span tal:replace="MONEY_PRINCIPAL"></span></p><input tal:attributes="name QUANTITEPRINCIPAL">
-    <p><span tal:replace="MONEY_ECHANGE"></span></p><input tal:attributes="name QUANTITEACTIF">
+    <p><span tal:replace="MONEY_PRINCIPAL"></span></p><input tal:attributes="name MONEY_PRINCIPAL">
+    <p><span tal:replace="MONEY_ECHANGE"></span></p><input tal:attributes="name MONEY_ECHANGE">
     <input type="submit" name="submit">
 </form>

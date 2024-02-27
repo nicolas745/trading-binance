@@ -24,8 +24,8 @@ class panel():
                if(request.form.get("submit")):
                     trading=TradingDatabase()
                     trading.edit_portfolio(
-                         request.form.get(enumsql.QUANTITEPRINCIPAL.value),
-                         request.form.get(enumsql.QUANTITEACTIF.value),
+                         request.form.get(os.getenv(configenv.MONEY_PRINCIPAL.value)),
+                         request.form.get(os.getenv(configenv.MONEY_ECHANGE.value)),
                     )
                     trading.close_connection()
                if(not session.get("user")):
@@ -50,10 +50,10 @@ class panel():
                    trading=TradingDatabase()
                    trading.modify_order(
                          idorder,
-                         request.form.get(enumsql.QUANTITEACTIF.value),
-                         request.form.get(enumsql.QUANTITEPRINCIPAL.value),
+                         request.form.get(os.getenv(configenv.MONEY_PRINCIPAL.value)),
+                         request.form.get(os.getenv(configenv.MONEY_ECHANGE.value)),
                     ) 
-                   trading.close()
+                   trading.close_connection()
                if(not session.get("user")):
                     return redirect("/")
                args = {
@@ -67,8 +67,8 @@ class panel():
                trading=TradingDatabase()
                if(request.form.get("add")):
                     trading.add_order(
-                         request.form.get(enumsql.QUANTITEACTIF.value),
-                         request.form.get(enumsql.QUANTITEPRINCIPAL.value),
+                         request.form.get(os.getenv(configenv.MONEY_PRINCIPAL.value)),
+                         request.form.get(os.getenv(configenv.MONEY_ECHANGE.value)),
                          request.form.get(enumsql.DATE.value)
                     )
                if(request.form.get("buy")):
@@ -76,11 +76,7 @@ class panel():
                if(request.form.get("edit")):
                     return redirect("/"+request.form.get("edit")+"/edit")
                if(request.form.get("sell")):
-                    sell=trading.get_order(request.form.get("sell"))
-                    if sell:
-                         self.binance.get_earn().getflexible().retir()
-                         self.binance.get_spot().sell_market(sell[0][enumsql.QUANTITEACTIF.value])
-                         trading.delete_order(sell['id'])
+                    self.binance.get_spot().sell_market(request.form.get("sell"))
                if(request.form.get("del")):
                     trading.delete_order(request.form.get("del"))
                args={
@@ -100,11 +96,20 @@ class panel():
                return self.misepage(**args)
      def misepage(self,**args):
           traide=TradingDatabase()
+          spot = self.binance.get_spot().get_balances()
           args= args|{
                "orders":traide.get_all_orders(),
                configenv.MONEY_ECHANGE.name:os.getenv(configenv.MONEY_ECHANGE.value),
                configenv.MONEY_PRINCIPAL.name:os.getenv(configenv.MONEY_PRINCIPAL.value),
-               "compte":traide.get_portfolio_data()
+               "compte":traide.get_portfolio_data(),
+               "wallet":{
+                    "spot":{
+                         os.getenv(configenv.MONEY_ECHANGE.value):spot.getactifechange(),
+                         os.getenv(configenv.MONEY_PRINCIPAL.value):spot.getactifprincal()
+                    },
+                    "earn":{
+                    }
+               }
           }
           for name in enumsql._member_names_:
                args[name]= enumsql[name].value

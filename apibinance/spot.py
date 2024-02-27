@@ -9,8 +9,6 @@ class spot:
     def __init__(self, client: Client|AsyncClient) -> None:
         self.client = client
         self.symbol = "{}{}".format(os.getenv(configenv.MONEY_ECHANGE.value),os.getenv(configenv.MONEY_PRINCIPAL.value)).upper()
-    def get_account_data(self):
-        return self.client.get_account()
     def get_balances(self) -> balances:
         return balances(self.client.get_account())
     
@@ -18,19 +16,26 @@ class spot:
         if(float(self.getinfo())<float(quantity)):
             db = TradingDatabase()
             portfolio=db.get_portfolio_data()
-            principal=portfolio[enumsql.QUANTITEPRINCIPAL.value]
-            if(quantity*prix<principal):
+            principal=float(portfolio[os.getenv(configenv.MONEY_PRINCIPAL.value)])
+            if(float(quantity)*float(prix)<principal):
                 order=self.client.create_order(symbol=self.symbol, side=Client.SIDE_BUY, type=Client.ORDER_TYPE_MARKET, quantity=quantity)
                 if(order['status']=="FILLED"):
-                    db.add_order(order["executedQty"],order["cummulativeQuoteQty"])
+                    print(order)
+                    db.add_order(order["cummulativeQuoteQty"],quantity)
+                    db.buy(order["cummulativeQuoteQty"],quantity)
+                    return True
             return False
-    
     def sell_market(self, id):
         db = TradingDatabase()
         order=db.get_order(id)
-        quantA = order[enumsql.QUANTITEACTIF.value]
-        order = self.client.create_order(symbol=self.symbol, side=Client.SIDE_SELL, type=Client.ORDER_TYPE_MARKET, quantity=quantA)
-    
+        if order.__len__():
+            quantA = order[0][os.getenv(configenv.MONEY_ECHANGE.value)]
+            order = self.client.create_order(symbol=self.symbol, side=Client.SIDE_SELL, type=Client.ORDER_TYPE_MARKET, quantity=quantA)
+            if(order['status']=="FILLED"):
+                db.delete_order(id)
+                db.sell(order["cummulativeQuoteQty"],quantA)
+                return True
+        return False
     def buy_limit(self, quantity, price):
         time_in_force = Client.TIME_IN_FORCE_GTC
         order = self.client.create_order(symbol=self.symbol, side=Client.SIDE_BUY, type=Client.ORDER_TYPE_LIMIT, quantity=quantity, price=price, timeInForce=time_in_force)
