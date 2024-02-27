@@ -57,8 +57,8 @@
     </form>
     {% include 'www/edit.html' %}
     <p>buy</p>
-    <form method="post">
         <p>prix <p tal:replace="MONEY_PRINCIPAL"></p><input type="number" step="0.00000001" id="buyP" tal:attributes="name MONEY_PRINCIPAL">
+    <form method="post">
         <p>prix <p tal:replace="MONEY_ECHANGE"></p><input type="number" step="0.00000001" id="buyA" tal:attributes="name MONEY_ECHANGE">
         <input  type="submit" name="buy" value="buy">
     </form>
