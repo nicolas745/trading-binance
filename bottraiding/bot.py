@@ -19,7 +19,7 @@ class bot:
         self.date = enumsql.DATE.value
 
     def start(self):
-        myspot = spot(self.client)
+        #myspot = spot(self.client)
         #comptespot = {
         #    configenv.MONEY_ECHANGE.value:myspot.get_balances().getactifechange(),
         #    configenv.MONEY_PRINCIPAL.value:myspot.get_balances().getactifprincal()
@@ -29,7 +29,6 @@ class bot:
         #    configenv.MONEY_ECHANGE.value:myearn.getflexible().getvaleurmoneyechange(),
         #    configenv.MONEY_PRINCIPAL.value:myearn.getflexible().getvaleurmoneyprincipal()
         #}
-        user=self.db.get_portfolio_data()
         orders = self.db.get_all_orders()
         if orders.__len__():
            for order in orders:
@@ -39,7 +38,15 @@ class bot:
                 nowdate = datetime.now().timestamp()
                 defdate=nowdate-lastdate
                 prix = pricipal/actif
-                newprix = prix * pow(1 + 0.001, 2) * pow(1 + 0.06 / (365 * 24 * 60 * 60), defdate / 1000)
+                newprix = prix * pow(1 + 0.001, 2) * pow(1 + 0.06 / (365 * 24 * 60 * 60), defdate)
                 pourcentage=(pricipal+((float(self.data['prix'])-newprix)*actif))/pricipal-1
-                if 0.05<pourcentage:
+                if 0.012<pourcentage:
                     spot(self.client).sell_market(order['id'])
+        user=self.db.get_portfolio_data()
+        time=(datetime.now().timestamp()-datetime.strptime(user[self.date], "%Y-%m-%dT%H:%M").timestamp())
+        if(60*60*12<time):
+            buy=10
+            nborder =user[enumsql.NBEXORDER.value]
+            nborderdouble=user[enumsql.NBEXORDERDOUBLE.value]
+            newbuy=buy*pow(1.01,user[enumsql.NBEXORDERDOUBLE.value])
+            quantite = newbuy/self.data["prix"]

@@ -129,3 +129,10 @@ class TradingDatabase:
     def sell(self,principal,actif):
         portfolio = self.get_portfolio_data()
         self.edit_portfolio(float(portfolio[self.asset1])+float(principal),float(portfolio[self.asset2])-float(actif))
+    def editportfolioorder(self,nborder,nborderdouble):
+        cursor = self.conn.cursor()
+        cursor.execute('''
+            UPDATE portfolio
+            SET {} = ?, {} = ?
+        '''.format(self.nbexorder, self.nbexorderdouble), (nborder,nborderdouble))
+        self.conn.commit()

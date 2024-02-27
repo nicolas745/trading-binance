@@ -13,6 +13,7 @@ class spot:
         return balances(self.client.get_account())
     
     def buy_market(self, quantity,prix):
+        quantity=round(float(quantity)/float(self.getinfo()))*float(self.getinfo())
         if(float(self.getinfo())<float(quantity)):
             db = TradingDatabase()
             portfolio=db.get_portfolio_data()
