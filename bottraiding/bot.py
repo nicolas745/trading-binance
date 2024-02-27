@@ -54,4 +54,4 @@ class bot:
             newbuy=buy*pow(1.01,nborderdouble)
             quantite = newbuy/float(self.data["prix"])
             spot(self.client).buy_market(quantite,self.data["prix"])
-            self.db.editportfolioorder(nborder,nborderdouble)
+            self.db.editportfolioorder(nborder,nborderdouble+1)
