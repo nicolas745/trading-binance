@@ -20,7 +20,6 @@ class spot:
             if(float(quantity)*float(prix)<principal):
                 order=self.client.create_order(symbol=self.symbol, side=Client.SIDE_BUY, type=Client.ORDER_TYPE_MARKET, quantity=quantity)
                 if(order['status']=="FILLED"):
-                    print(order)
                     db.add_order(order["cummulativeQuoteQty"],quantity)
                     db.buy(order["cummulativeQuoteQty"],quantity)
                     return True

@@ -31,7 +31,7 @@ class stream:
                 res = await tscm.recv()
                 self.socketio.emit("prix",res['p'])
                 self.prix = res['p']
-                #bot(res,db,self.client).start()
+                bot(res,db,self.client).start()
                 time.sleep(5)
     def getptix(self):
         return self.prix
