@@ -71,6 +71,7 @@ class TradingDatabase:
             INSERT INTO orders ({}, {}, {})
             VALUES (?, ?, ?)
         '''.format(self.asset1,self.date,self.asset2), (quantityP, date, quantityA))
+        self.updatedate()
         portfolio=self.get_portfolio_data()
         if float(datetime.strptime(portfolio[self.date],"%Y-%m-%dT%H:%M").timestamp())<float(datetime.strptime(date,"%Y-%m-%dT%H:%M").timestamp()):
             self.buy(quantityP,quantityA)
@@ -135,4 +136,12 @@ class TradingDatabase:
             UPDATE portfolio
             SET {} = ?, {} = ?
         '''.format(self.nbexorder, self.nbexorderdouble), (nborder,nborderdouble))
+        self.conn.commit()
+    def updatedate(self):
+        date = datetime.now().strftime("%Y-%m-%dT%H:%M")
+        cursor = self.conn.cursor()
+        cursor.execute('''
+            UPDATE portfolio
+            SET {} = ?
+        '''.format(self.date), (date,))
         self.conn.commit()
