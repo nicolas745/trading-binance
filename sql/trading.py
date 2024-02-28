@@ -56,22 +56,21 @@ class TradingDatabase:
             SET {}=?
         '''.format(self.date), (ordertime,))
         self.conn.commit()
-    def edit_portfolio(self, pricipal, echange,openorder=datetime.now().strftime("%Y-%m-%dT%H:%M")):
+    def edit_portfolio(self, pricipal, echange):
         cursor = self.conn.cursor()
         cursor.execute('''
             UPDATE portfolio
-            SET {} = ?, {} = ?, {} = ?
-        '''.format(self.asset1, self.asset2, self.date), (pricipal, echange,openorder))
+            SET {} = ?, {} = ?
+        '''.format(self.asset1, self.asset2, self.date), (pricipal, echange))
         self.conn.commit()
     def protfolioorderexupdate(self):
         cursor = self.conn.cursor()
-    def add_order(self, quantityP, quantityA,date=datetime.now().strftime("%Y-%m-%dT%H:%M")):
+    def add_order(self, quantityP, quantityA,date):
         cursor = self.conn.cursor()
         cursor.execute('''
             INSERT INTO orders ({}, {}, {})
             VALUES (?, ?, ?)
         '''.format(self.asset1,self.date,self.asset2), (quantityP, date, quantityA))
-        self.updatedate()
         portfolio=self.get_portfolio_data()
         if float(datetime.strptime(portfolio[self.date],"%Y-%m-%dT%H:%M").timestamp())<float(datetime.strptime(date,"%Y-%m-%dT%H:%M").timestamp()):
             self.buy(quantityP,quantityA)

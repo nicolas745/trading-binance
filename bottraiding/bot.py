@@ -2,23 +2,23 @@ from sql.trading import TradingDatabase
 from classenum.sql import enumsql
 from classenum.env import configenv
 from datetime import datetime
+import time as mytime
 import os
 from binance.client import AsyncClient
 from apibinance.spot import spot
 from apibinance.simpleearn import simple_earn
 from datetime import datetime
+res = True
 class bot:
-    def __init__(self, data, db:TradingDatabase,client:AsyncClient) -> None:
+    def __init__(self, db:TradingDatabase,client:AsyncClient) -> None:
         self.db = db
         self.client = client
-        self.data = {}
-        self.data['time'] = data["T"]/1000
-        self.data["prix"] = data["p"]
         self.moneyprincipal= os.getenv(configenv.MONEY_PRINCIPAL.value)
         self.moneyechange= os.getenv(configenv.MONEY_ECHANGE.value)
         self.date = enumsql.DATE.value
+        self.res = True
 
-    def start(self):
+    def start(self, actifprix):
         #myspot = spot(self.client)
         #comptespot = {
         #    configenv.MONEY_ECHANGE.value:myspot.get_balances().getactifechange(),
@@ -39,12 +39,14 @@ class bot:
                 defdate=nowdate-lastdate
                 prix = pricipal/actif
                 newprix = prix * pow(1 + 0.001, 2) * pow(1 + 0.06 / (365 * 24 * 60 * 60), defdate)
-                pourcentage=(pricipal+((float(self.data['prix'])-newprix)*actif))/pricipal-1
+                pourcentage=(pricipal+((float(actifprix)-newprix)*actif))/pricipal-1
                 if 0.012<pourcentage:
                     spot(self.client).sell_market(order['id'])
         user=self.db.get_portfolio_data()
         time=(datetime.now().timestamp()-datetime.strptime(user[self.date], "%Y-%m-%dT%H:%M").timestamp())
+        #if(60*2<time):
         if(60*60*12<time):
+            self.db.updatedate()
             buy=10
             nborder =float(user[enumsql.NBEXORDER.value])
             nborderdouble=float(user[enumsql.NBEXORDERDOUBLE.value])
@@ -52,6 +54,8 @@ class bot:
                 nborder=nborder+1
                 nborderdouble=0
             newbuy=buy*pow(1.01,nborderdouble)
-            quantite = newbuy/float(self.data["prix"])
-            spot(self.client).buy_market(quantite,self.data["prix"])
-            self.db.editportfolioorder(nborder,nborderdouble+1)
+            if(newbuy<user[configenv.MONEY_PRINCIPAL.value]):
+                quantite = newbuy/float(actifprix)
+                spot(self.client).buy_market(quantite,actifprix)
+                self.db.editportfolioorder(nborder,nborderdouble+1)
+                mytime.sleep(5)

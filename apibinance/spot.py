@@ -4,6 +4,7 @@ from .simple_earn.flexible import flexible
 from classenum.env import configenv
 from classenum.sql import enumsql
 from sql.trading import TradingDatabase
+from datetime import datetime
 import os
 class spot:
     def __init__(self, client: Client|AsyncClient) -> None:
@@ -21,7 +22,7 @@ class spot:
             if(float(quantity)*float(prix)<principal):
                 order=self.client.create_order(symbol=self.symbol, side=Client.SIDE_BUY, type=Client.ORDER_TYPE_MARKET, quantity=quantity)
                 if(order['status']=="FILLED"):
-                    db.add_order(order["cummulativeQuoteQty"],quantity)
+                    db.add_order(order["cummulativeQuoteQty"],quantity, datetime.now().strftime("%Y-%m-%dT%H:%M"))
                     db.buy(order["cummulativeQuoteQty"],quantity)
                     return True
             return False
