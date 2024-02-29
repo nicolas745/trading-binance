@@ -18,24 +18,16 @@ class bot:
         self.date = enumsql.DATE.value
         self.res = True
         self.sellprix = 0
+        print("dddd")
 
     def start(self, actifprix):
-        #myspot = spot(self.client)
-        #comptespot = {
-        #    configenv.MONEY_ECHANGE.value:myspot.get_balances().getactifechange(),
-        #    configenv.MONEY_PRINCIPAL.value:myspot.get_balances().getactifprincal()
-        #}
-        #myearn = simple_earn(self.client)
-        #comptflexible = {
-        #    configenv.MONEY_ECHANGE.value:myearn.getflexible().getvaleurmoneyechange(),
-        #    configenv.MONEY_PRINCIPAL.value:myearn.getflexible().getvaleurmoneyprincipal()
-        #}
+        actifprix = float(actifprix)
         orders = self.db.get_all_orders()
         if orders.__len__():
-            if(actifprix<=self.sellprix):
-               self.sellprix = actifprix
-            elif(self.sellprix*1.01<actifprix):
+            if self.sellprix < actifprix/1.01:
                 self.sellprix = actifprix/1.01
+            elif actifprix <self.sellprix:
+                self.sellprix = actifprix
             for order in orders:
                 pricipal= order[self.moneyprincipal]
                 actif=order[self.moneyechange]
