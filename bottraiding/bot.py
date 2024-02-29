@@ -17,6 +17,7 @@ class bot:
         self.moneyechange= os.getenv(configenv.MONEY_ECHANGE.value)
         self.date = enumsql.DATE.value
         self.res = True
+        self.sellprix = 0
 
     def start(self, actifprix):
         #myspot = spot(self.client)
@@ -31,7 +32,11 @@ class bot:
         #}
         orders = self.db.get_all_orders()
         if orders.__len__():
-           for order in orders:
+            if(actifprix<=self.sellprix):
+               self.sellprix = actifprix
+            elif(self.sellprix*1.01<actifprix):
+                self.sellprix = actifprix/1.01
+            for order in orders:
                 pricipal= order[self.moneyprincipal]
                 actif=order[self.moneyechange]
                 lastdate=datetime.strptime(order[self.date], "%Y-%m-%dT%H:%M").timestamp()
@@ -40,13 +45,13 @@ class bot:
                 prix = pricipal/actif
                 newprix = prix * pow(1 + 0.001, 2) * pow(1 + 0.06 / (365 * 24 * 60 * 60), defdate)
                 pourcentage=(pricipal+((float(actifprix)-newprix)*actif))/pricipal-1
-                if 0.012<pourcentage:
-                    spot(self.client).sell_market(order['id'])
+                if 0.011<pourcentage:
+                    if(actifprix<=self.sellprix):
+                        spot(self.client).sell_market(order['id'])
         user=self.db.get_portfolio_data()
         time=(datetime.now().timestamp()-datetime.strptime(user[self.date], "%Y-%m-%dT%H:%M").timestamp())
         #if(60*2<time):
         if(60*60*12<time):
-            self.db.updatedate()
             buy=10
             nborder =float(user[enumsql.NBEXORDER.value])
             nborderdouble=float(user[enumsql.NBEXORDERDOUBLE.value])
@@ -54,7 +59,8 @@ class bot:
                 nborder=nborder+1
                 nborderdouble=0
             newbuy=buy*pow(1.01,nborderdouble)
-            if(newbuy<user[configenv.MONEY_PRINCIPAL.value]):
+            if(newbuy<user[self.moneyprincipal]):
+                self.db.updatedate()
                 quantite = newbuy/float(actifprix)
                 spot(self.client).buy_market(quantite,actifprix)
                 self.db.editportfolioorder(nborder,nborderdouble+1)

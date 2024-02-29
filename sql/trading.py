@@ -61,7 +61,7 @@ class TradingDatabase:
         cursor.execute('''
             UPDATE portfolio
             SET {} = ?, {} = ?
-        '''.format(self.asset1, self.asset2, self.date), (pricipal, echange))
+        '''.format(self.asset1, self.asset2), (pricipal, echange))
         self.conn.commit()
     def protfolioorderexupdate(self):
         cursor = self.conn.cursor()
