@@ -1,5 +1,5 @@
 <script>
-    socket.on("prix",(prix)=>{
+    function actualiserpris(prix){
         document.getElementById("prix").innerText = prix
         Array.from(document.getElementsByClassName("benfpourcentage")).forEach((element)=>{
             Qactif=document.querySelectorAll(".{{MONEY_ECHANGE}}[orderid='"+element.getAttribute("orderid")+"']")[0].innerText
@@ -13,5 +13,9 @@
             document.querySelectorAll(".benef[orderid='"+element.getAttribute("orderid")+"']")[0].innerText = ((prix-newprix)*Qactif)+" {{MONEY_PRINCIPAL}}"
             element.innerText = (Qpricipal+((prix-newprix)*Qactif))/Qpricipal-1
         })
+    }
+    socket.on("prix",(prix)=>{
+        actualiserpris(prix)
     })
+    actualiserpris(document.getElementById("prix").innerText)
 </script>

@@ -1,0 +1,31 @@
+<form>
+    <p>
+        date debut <input name="pdate" type="date">
+    </p>
+    <p>
+        date de fin <input name="ldate" type="date">
+    </p>
+    <input type="submit" name="submit" value="submit">
+</form>
+<table>
+    <tr>
+        <td>
+            jour
+        </td>
+        <td>
+            captal
+        </td>
+        <td>
+            injection
+        </td>
+        <td>
+            benefice
+        </td>
+        <td>
+            benefice théorique
+        </td>
+    </tr>
+    <tr tal:repeat="info data">
+        <td tal:content="info"></td>
+    </tr>
+</table>

@@ -1,6 +1,7 @@
 import sqlite3
 from datetime import datetime
 import os
+from binance.client import Client
 from classenum.env import configenv
 from classenum.sql import enumsql
 class TradingDatabase:
@@ -9,6 +10,7 @@ class TradingDatabase:
         self.asset2 = os.getenv(configenv.MONEY_ECHANGE.value)
         self.date = enumsql.DATE.value
         self.nbexorder = enumsql.NBEXORDER.value
+        self.capital = enumsql.CAPITAL.value
         self.nbexorderdouble = enumsql.NBEXORDERDOUBLE.value
         self.conn = sqlite3.connect(database_name)
         self.create_tables()
@@ -34,6 +36,13 @@ class TradingDatabase:
                 {} REAL
             )
         '''.format(self.asset1,self.date,self.asset2))
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS historique (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                {} TEXT,
+                {} TEXT
+            )
+        '''.format(self.date,self.capital))
         self.conn.commit()
 
     def initialize_portfolio(self):
@@ -144,3 +153,7 @@ class TradingDatabase:
             SET {} = ?
         '''.format(self.date), (date,))
         self.conn.commit()
+    def gethistorique(self,date:float,client:Client):
+        account_snapshot = client.get_account_snapshot(type='SPOT', timestamp=date)
+        print(account_snapshot)
+        return 0

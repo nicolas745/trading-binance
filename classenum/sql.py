@@ -5,3 +5,5 @@ class enumsql(Enum):
     DATE="opendate"
     NBEXORDER = "nborderex"
     NBEXORDERDOUBLE = "nborderexdouble"
+    CAPITAL = "capital"
+    INJECTION = "injection"

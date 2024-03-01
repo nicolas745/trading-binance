@@ -33,7 +33,12 @@ class stream:
                 self.socketio.emit("prix",res['p'])
                 self.prix = res['p']
                 mybot.start(self.prix)
+                self.sellprix=mybot.getprix()
+                self.time=mybot.gettime()
                 time.sleep(5)
-    def getptix(self):
+    def getprix(self):
         return self.prix
-        
+    def getsellprix(self):
+        return self.sellprix
+    def gettime(self):
+        return self.time

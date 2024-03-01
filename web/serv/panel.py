@@ -102,6 +102,8 @@ class panel():
                configenv.MONEY_ECHANGE.name:os.getenv(configenv.MONEY_ECHANGE.value),
                configenv.MONEY_PRINCIPAL.name:os.getenv(configenv.MONEY_PRINCIPAL.value),
                "compte":traide.get_portfolio_data(),
+               "sellprix":self.stream.getsellprix(),
+               "prixact" : self.stream.getprix(),
                "wallet":{
                     "spot":{
                          os.getenv(configenv.MONEY_ECHANGE.value):spot.getactifechange(),

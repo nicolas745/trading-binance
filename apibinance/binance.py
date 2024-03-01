@@ -5,6 +5,7 @@ from .simpleearn import simple_earn
 from .stream import stream
 from classenum.env import configenv
 from flask_socketio import SocketIO
+from .historique import historique
 class Binance:
     def __init__(self) -> None:
         self.testnet = os.getenv(configenv.TESTNET.value).upper()!="FALSE"
@@ -21,3 +22,5 @@ class Binance:
         return simple_earn(self.client)
     def get_stream(self,socketio:SocketIO):
         return stream(self.client,socketio)
+    def get_historique(self):
+        return historique(self.client)

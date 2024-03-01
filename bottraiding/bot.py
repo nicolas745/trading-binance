@@ -18,8 +18,7 @@ class bot:
         self.date = enumsql.DATE.value
         self.res = True
         self.sellprix = 0
-        print("dddd")
-
+        self.time = 0
     def start(self, actifprix):
         actifprix = float(actifprix)
         orders = self.db.get_all_orders()
@@ -42,7 +41,6 @@ class bot:
                         spot(self.client).sell_market(order['id'])
         user=self.db.get_portfolio_data()
         time=(datetime.now().timestamp()-datetime.strptime(user[self.date], "%Y-%m-%dT%H:%M").timestamp())
-        #if(60*2<time):
         if(60*60*12<time):
             buy=10
             nborder =float(user[enumsql.NBEXORDER.value])
@@ -57,3 +55,7 @@ class bot:
                 spot(self.client).buy_market(quantite,actifprix)
                 self.db.editportfolioorder(nborder,nborderdouble+1)
                 mytime.sleep(5)
+    def getprix(self):
+        return self.sellprix
+    def gettime(self):
+        return datetime.utcfromtimestamp(self.time).strftime("%H:%M:%S")
