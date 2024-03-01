@@ -72,7 +72,7 @@ class panel():
                          request.form.get(enumsql.DATE.value)
                     )
                if(request.form.get("buy")):
-                    self.binance.get_spot().buy_market(request.form.get(os.getenv(configenv.MONEY_ECHANGE.value)),self.stream.getptix())
+                    self.binance.get_spot().buy_market(request.form.get(os.getenv(configenv.MONEY_ECHANGE.value)),self.stream.getprix())
                if(request.form.get("edit")):
                     return redirect("/"+request.form.get("edit")+"/edit")
                if(request.form.get("sell")):

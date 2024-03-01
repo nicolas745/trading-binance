@@ -154,6 +154,15 @@ class TradingDatabase:
         '''.format(self.date), (date,))
         self.conn.commit()
     def gethistorique(self,date:float,client:Client):
-        account_snapshot = client.get_account_snapshot(type='SPOT', timestamp=date)
-        print(account_snapshot)
-        return 0
+        cursor = self.conn.cursor()
+        cursor.execute('''
+            SELECT * FROM orders
+            WHERE {}=?
+        '''.format(self.date),(date,))
+        result = cursor.fetchall()
+        if result:
+            columns = [col[0] for col in cursor.description]
+            histo = dict(zip(columns, result))
+            return histo
+        else:
+            return None
