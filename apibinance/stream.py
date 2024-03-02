@@ -14,7 +14,7 @@ class stream:
         self.client = client
         self.socketio = socketio
         self.prix = 0
-
+        self.buytime = 0
     def start(self):
         threading.Thread(target=self.load).start()
     def load(self):
@@ -33,12 +33,14 @@ class stream:
                 self.socketio.emit("prix",res['p'])
                 self.prix = res['p']
                 mybot.start(self.prix)
-                self.sellprix=mybot.getprix()
-                self.time=mybot.gettime()
-                time.sleep(5)
+                self.sellprix=mybot.getsellprix()
+                self.buytime=mybot.getbuytime()
+                self.socketio.emit("buytime",self.buytime)
+                self.socketio.emit("sellprix",self.sellprix)
+                time.sleep(1)
     def getprix(self):
         return self.prix
     def getsellprix(self):
         return self.sellprix
-    def gettime(self):
-        return self.time
+    def getbuytime(self):
+        return self.buytime

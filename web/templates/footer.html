@@ -17,5 +17,11 @@
     socket.on("prix",(prix)=>{
         actualiserpris(prix)
     })
+    socket.on("buytime",(time)=>{
+        document.getElementById("buytime").innerText = time
+    })
+    socket.on("sellprix",(time)=>{
+        document.getElementById("sellprix").innerText = time
+    })
     actualiserpris(document.getElementById("prix").innerText)
 </script>

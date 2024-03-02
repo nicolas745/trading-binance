@@ -22,11 +22,11 @@ class bot:
     def start(self, actifprix):
         actifprix = float(actifprix)
         orders = self.db.get_all_orders()
+        if self.sellprix < actifprix/1.01:
+            self.sellprix = actifprix/1.01
+        elif actifprix <self.sellprix:
+            self.sellprix = actifprix
         if orders.__len__():
-            if self.sellprix < actifprix/1.01:
-                self.sellprix = actifprix/1.01
-            elif actifprix <self.sellprix:
-                self.sellprix = actifprix
             for order in orders:
                 pricipal= order[self.moneyprincipal]
                 actif=order[self.moneyechange]
@@ -40,8 +40,8 @@ class bot:
                     if(actifprix<=self.sellprix):
                         spot(self.client).sell_market(order['id'])
         user=self.db.get_portfolio_data()
-        time=(datetime.now().timestamp()-datetime.strptime(user[self.date], "%Y-%m-%dT%H:%M").timestamp())
-        if(60*60*12<time):
+        self.time=(datetime.now().timestamp()-datetime.strptime(user[self.date], "%Y-%m-%dT%H:%M").timestamp())
+        if(12*60*60<self.time):
             buy=10
             nborder =float(user[enumsql.NBEXORDER.value])
             nborderdouble=float(user[enumsql.NBEXORDERDOUBLE.value])
@@ -54,8 +54,7 @@ class bot:
                 quantite = newbuy/float(actifprix)
                 spot(self.client).buy_market(quantite,actifprix)
                 self.db.editportfolioorder(nborder,nborderdouble+1)
-                mytime.sleep(5)
-    def getprix(self):
+    def getsellprix(self):
         return self.sellprix
-    def gettime(self):
-        return datetime.utcfromtimestamp(self.time).strftime("%H:%M:%S")
+    def getbuytime(self):
+        return datetime.utcfromtimestamp(60-self.time).strftime("%H:%M:%S")
