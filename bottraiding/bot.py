@@ -45,8 +45,8 @@ class bot:
             buy=10
             nborder =float(user[enumsql.NBEXORDER.value])
             nborderdouble=float(user[enumsql.NBEXORDERDOUBLE.value])
+            nborder=nborder+0.5 
             if(nborder<nborderdouble):
-                nborder=nborder+1
                 nborderdouble=0
             newbuy=buy*pow(1.01,nborderdouble)
             if(newbuy<user[self.moneyprincipal]):
@@ -57,4 +57,4 @@ class bot:
     def getsellprix(self):
         return self.sellprix
     def getbuytime(self):
-        return datetime.utcfromtimestamp(60-self.time).strftime("%H:%M:%S")
+        return datetime.utcfromtimestamp(60*12*12-self.time).strftime("%H:%M:%S")

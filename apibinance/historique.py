@@ -12,7 +12,7 @@ class historique:
             sql =db.gethistorique(i,self.client)
             if sql:
                 res[date] = sql
-        spot = self.client.get_account_snapshot(type="SPOT", startTime=Pdate*1000,endTime=Ldate*1000)
+        spot = self.client.get_account_snapshot(type="SPOT", startTime=Pdate,endTime=Ldate)
         print(res)
         print("============================")
         print(spot)
