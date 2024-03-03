@@ -16,6 +16,6 @@ class historique:
         print(res)
         print("============================")
         print(spot)
-        margin = self.client.get_account_snapshot(type="MARGIN", startTime=Pdate,endTime=Ldate)
-        earn = self.client.get_account_snapshot(type="SAVINGS", startTime=Pdate,endTime=Ldate)
+        margin = self.client.get_account_snapshot(type="MARGIN", sstartTime=int(Pdate*1000),limit=500)
+        earn = self.client.get_account_snapshot(type="SAVINGS", startTime=int(Pdate*1000),limit=500)
         return res

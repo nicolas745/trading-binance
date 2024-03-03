@@ -57,4 +57,4 @@ class bot:
     def getsellprix(self):
         return self.sellprix
     def getbuytime(self):
-        return str(timedelta(seconds=60*12*12-self.time))
+        return str(timedelta(seconds=12*60*60- self.time))
