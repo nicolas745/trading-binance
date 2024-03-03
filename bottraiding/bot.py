@@ -7,7 +7,7 @@ import os
 from binance.client import AsyncClient
 from apibinance.spot import spot
 from apibinance.simpleearn import simple_earn
-from datetime import datetime
+from datetime import datetime, timedelta
 res = True
 class bot:
     def __init__(self, db:TradingDatabase,client:AsyncClient) -> None:
@@ -57,4 +57,4 @@ class bot:
     def getsellprix(self):
         return self.sellprix
     def getbuytime(self):
-        return datetime.utcfromtimestamp(60*12*12-self.time).strftime("%H:%M:%S")
+        return str(timedelta(seconds=60*12*12-self.time))

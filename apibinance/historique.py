@@ -12,10 +12,10 @@ class historique:
             sql =db.gethistorique(i,self.client)
             if sql:
                 res[date] = sql
-        spot = self.client.get_account_snapshot(type="SPOT", startTime=Pdate,endTime=Ldate)
+        spot = self.client.get_account_snapshot(type="SPOT", startTime=int(Pdate*1000),limit=500)
         print(res)
         print("============================")
         print(spot)
-        margin = self.client.get_account_snapshot(type="MARGIN", startTime=Pdate*1000,endTime=Ldate*1000)
-        earn = self.client.get_account_snapshot(type="SAVINGS", startTime=Pdate*1000,endTime=Ldate*1000)
+        margin = self.client.get_account_snapshot(type="MARGIN", startTime=Pdate,endTime=Ldate)
+        earn = self.client.get_account_snapshot(type="SAVINGS", startTime=Pdate,endTime=Ldate)
         return res

@@ -14,14 +14,13 @@ class historique():
         self.socket = socket
         @app.get("/historique")
         def hist():
-            #if(not session.get("user")):
-            #    return redirect("/")
-            pdate = request.args.get('pdate', datetime.now().strftime("%Y-%m-%d"))
-            enddate = request.args.get('ldate', datetime.now().strftime("%Y-%m-%d"))
             args = {
-                "data": self.binance.get_historique().gethistorique(datetime.strptime(pdate,"%Y-%m-%d").timestamp(),datetime.strptime(enddate,"%Y-%m-%d").timestamp()),
                 "page" : "historique.html"
             }
+            if(request.args.__len__()):
+                pdate = request.args.get('pdate', datetime.now().strftime("%Y-%m-%d"))
+                enddate = request.args.get('ldate', datetime.now().strftime("%Y-%m-%d"))
+                args["data"]= self.binance.get_historique().gethistorique(datetime.strptime(pdate,"%Y-%m-%d").timestamp(),datetime.strptime(enddate,"%Y-%m-%d").timestamp()),
             return self.misepage(**args)
     def misepage(self,**args):
         traide=TradingDatabase()
