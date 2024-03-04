@@ -2,8 +2,8 @@ from sql.trading import TradingDatabase
 from classenum.sql import enumsql
 from classenum.env import configenv
 from datetime import datetime
-import time as mytime
 import os
+from flask_socketio import SocketIO
 from binance.client import AsyncClient
 from apibinance.spot import spot
 from apibinance.simpleearn import simple_earn
@@ -19,7 +19,7 @@ class bot:
         self.res = True
         self.sellprix = 0
         self.time = 0
-    def start(self, actifprix):
+    def start(self, actifprix,Socketio:SocketIO):
         actifprix = float(actifprix)
         orders = self.db.get_all_orders()
         if self.sellprix < actifprix/1.01:
@@ -39,9 +39,10 @@ class bot:
                 if 0.011<pourcentage:
                     if(actifprix<=self.sellprix):
                         spot(self.client).sell_market(order['id'])
+                        Socketio.emit("del",order['id'])
         user=self.db.get_portfolio_data()
         self.time=(datetime.now().timestamp()-datetime.strptime(user[self.date], "%Y-%m-%dT%H:%M").timestamp())
-        if(12*60*60<self.time):
+        if(60<self.time):
             buy=10
             nborder =float(user[enumsql.NBEXORDER.value])
             nborderdouble=float(user[enumsql.NBEXORDERDOUBLE.value])
@@ -52,8 +53,13 @@ class bot:
             if(newbuy<user[self.moneyprincipal]):
                 self.db.updatedate()
                 quantite = newbuy/float(actifprix)
-                spot(self.client).buy_market(quantite,actifprix)
-                self.db.editportfolioorder(nborder,nborderdouble+1)
+                res=spot(self.client).buy_market(quantite,actifprix)
+                if res:
+                    self.db.editportfolioorder(nborder,nborderdouble+1)
+                    Socketio.emit("add",{
+                        self.moneyprincipal:res[self.moneyprincipal],
+                        self.moneyechange:res[self.moneyechange]
+                    })
     def getsellprix(self):
         return self.sellprix
     def getbuytime(self):

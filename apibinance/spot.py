@@ -9,12 +9,14 @@ import os
 class spot:
     def __init__(self, client: Client|AsyncClient) -> None:
         self.client = client
-        self.symbol = "{}{}".format(os.getenv(configenv.MONEY_ECHANGE.value),os.getenv(configenv.MONEY_PRINCIPAL.value)).upper()
+        self.moneyprincipal = os.getenv(configenv.MONEY_PRINCIPAL.value)
+        self.moneyechange = os.getenv(configenv.MONEY_ECHANGE.value)
+        self.symbol = "{}{}".format(self.moneyechange,self.moneyprincipal).upper()
     def get_balances(self) -> balances:
         return balances(self.client.get_account())
     
     def buy_market(self, quantity,prix):
-        quantity=round(float(quantity)/float(self.getinfo()))*float(self.getinfo())
+        quantity=round(round(float(quantity)/float(self.getinfo()))*float(self.getinfo()),5)
         if(float(self.getinfo())<float(quantity)):
             db = TradingDatabase()
             portfolio=db.get_portfolio_data()
@@ -24,8 +26,11 @@ class spot:
                 if(order['status']=="FILLED"):
                     db.add_order(order["cummulativeQuoteQty"],quantity, datetime.now().strftime("%Y-%m-%dT%H:%M"))
                     db.buy(order["cummulativeQuoteQty"],quantity)
-                    return True
-            return False
+                    return {
+                        self.moneyechange:order["cummulativeQuoteQty"],
+                        self.moneyprincipal: quantity 
+                    }
+            return None
     def sell_market(self, id):
         db = TradingDatabase()
         order=db.get_order(id)

@@ -32,7 +32,7 @@ class stream:
                 res = await tscm.recv()
                 self.socketio.emit("prix",res['p'])
                 self.prix = res['p']
-                mybot.start(self.prix)
+                mybot.start(self.prix,self.socketio)
                 self.sellprix=mybot.getsellprix()
                 self.buytime=mybot.getbuytime()
                 self.socketio.emit("buytime",self.buytime)

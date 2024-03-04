@@ -23,5 +23,11 @@
     socket.on("sellprix",(time)=>{
         document.getElementById("sellprix").innerText = time
     })
+    socket.on("del",(id)=>{
+        document.getElementById(id).remove()
+    })
+    socket.on("add",()=>{
+        
+    })
     actualiserpris(document.getElementById("prix").innerText)
 </script>

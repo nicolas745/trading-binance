@@ -80,10 +80,12 @@ class TradingDatabase:
             INSERT INTO orders ({}, {}, {})
             VALUES (?, ?, ?)
         '''.format(self.asset1,self.date,self.asset2), (quantityP, date, quantityA))
-        portfolio=self.get_portfolio_data()
-        if float(datetime.strptime(portfolio[self.date],"%Y-%m-%dT%H:%M").timestamp())<float(datetime.strptime(date,"%Y-%m-%dT%H:%M").timestamp()):
-            self.buy(quantityP,quantityA)
+#        portfolio=self.get_portfolio_data()
+#        if float(datetime.strptime(portfolio[self.date],"%Y-%m-%dT%H:%M").timestamp())<float(datetime.strptime(date,"%Y-%m-%dT%H:%M").timestamp()):
+#            self.buy(quantityP,quantityA)
+        nouvel_id = cursor.lastrowid
         self.conn.commit()
+        return nouvel_id
     def delete_order(self, order_id):
         cursor = self.conn.cursor()
         cursor.execute('''
