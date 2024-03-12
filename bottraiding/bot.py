@@ -42,7 +42,7 @@ class bot:
                         Socketio.emit("del",order['id'])
         user=self.db.get_portfolio_data()
         self.time=(datetime.now().timestamp()-datetime.strptime(user[self.date], "%Y-%m-%dT%H:%M").timestamp())
-        if(60<self.time):
+        if(12*60*60<self.time):
             buy=10
             nborder =float(user[enumsql.NBEXORDER.value])
             nborderdouble=float(user[enumsql.NBEXORDERDOUBLE.value])

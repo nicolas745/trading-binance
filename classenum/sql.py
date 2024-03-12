@@ -7,3 +7,4 @@ class enumsql(Enum):
     NBEXORDERDOUBLE = "nborderexdouble"
     CAPITAL = "capital"
     INJECTION = "injection"
+    PRIX = "prix"

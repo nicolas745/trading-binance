@@ -13,7 +13,7 @@ class historique:
             if sql:
                 res[date] = sql
         prix = {}
-        for i in range(Pdate,Ldate,60*60*24):
+        for i in range(int(Pdate),int(Ldate),60*60*24):
             if(i in res.keys()):
                 if i in prix.keys():
                     reqprixs=self.client.get_historical_klines(symbol="BTCUSDT",start_str=i,limit=500)

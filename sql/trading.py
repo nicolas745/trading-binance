@@ -11,6 +11,7 @@ class TradingDatabase:
         self.date = enumsql.DATE.value
         self.nbexorder = enumsql.NBEXORDER.value
         self.capital = enumsql.CAPITAL.value
+        self.prix = enumsql.PRIX.value
         self.nbexorderdouble = enumsql.NBEXORDERDOUBLE.value
         self.conn = sqlite3.connect(database_name)
         self.create_tables()
@@ -42,7 +43,7 @@ class TradingDatabase:
                 {} TEXT,
                 {} TEXT
             )
-        '''.format(self.date,self.capital))
+        '''.format(self.date,self.capital,self.prix))
         self.conn.commit()
 
     def initialize_portfolio(self):
@@ -155,12 +156,12 @@ class TradingDatabase:
             SET {} = ?
         '''.format(self.date), (date,))
         self.conn.commit()
-    def gethistorique(self,date:float,client:Client):
+    def gethistorique(self,startdate:float,enddate:float,client:Client):
         cursor = self.conn.cursor()
         cursor.execute('''
             SELECT * FROM orders
-            WHERE {}=?
-        '''.format(self.date),(date,))
+            WHERE ?<{} AND {}<?
+        '''.format(self.date,self.date),(startdate,enddate))
         result = cursor.fetchall()
         if result:
             columns = [col[0] for col in cursor.description]
