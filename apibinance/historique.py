@@ -18,8 +18,7 @@ class historique:
                 if i in prix.keys():
                     reqprixs=self.client.get_historical_klines(symbol="BTCUSDT",start_str=i,limit=500)
                     for i2 in range(0,499,1):
-                        prix[Pdate+i2*60*60*249]=reqprixs[i2][1]
-                
+                        prix[Pdate+i2*60*60*249]=reqprixs[i2][1] 
                 spot = self.client.get_account_snapshot(type="SPOT", startTime=int(Pdate*1000),limit=500,endTime=int(Ldate*1000))
                 margin = self.client.get_account_snapshot(type="MARGIN", sstartTime=int(Pdate*1000),limit=500,endTime=int(Ldate*1000))
                 

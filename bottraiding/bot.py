@@ -3,6 +3,7 @@ from classenum.sql import enumsql
 from classenum.env import configenv
 from datetime import datetime
 import os
+import numpy as np
 from flask_socketio import SocketIO
 from binance.client import AsyncClient
 from apibinance.spot import spot
@@ -49,6 +50,12 @@ class bot:
             nborder=nborder+0.5 
             if(nborder<nborderdouble):
                 nborderdouble=0
+            if(512<nborder):
+                nborderdouble=0
+                nborder=0
+            if(nborder>(-0.5+np.sqrt(0.25-2*float(user[enumsql.CAPITAL.value])))):
+                nborderdouble=0
+                nborder=0
             newbuy=buy*pow(1.01,nborderdouble)
             if(newbuy<user[self.moneyprincipal]):
                 self.db.updatedate()
