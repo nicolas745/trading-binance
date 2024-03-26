@@ -29,3 +29,4 @@ typing_extensions==4.9.0
 python-gnupg
 Chameleon
 flask-socketio
+numpy
