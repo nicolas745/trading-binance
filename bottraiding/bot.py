@@ -53,9 +53,6 @@ class bot:
             if(512<nborder):
                 nborderdouble=0
                 nborder=0
-            if(nborder>(-0.5+np.sqrt(0.25-2*float(user[enumsql.CAPITAL.value])/10))):
-                nborderdouble=0
-                nborder=0
             newbuy=buy*pow(1.01,nborderdouble)
             if(newbuy<user[self.moneyprincipal]):
                 self.db.updatedate()
