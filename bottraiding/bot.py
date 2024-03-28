@@ -47,14 +47,18 @@ class bot:
             buy=10
             nborder =float(user[enumsql.NBEXORDER.value])
             nborderdouble=float(user[enumsql.NBEXORDERDOUBLE.value])
+            moneyprincipal= float(user[self.moneyprincipal])
             nborder=nborder+0.5 
             if(nborder<nborderdouble):
                 nborderdouble=0
             if(512<nborder):
                 nborderdouble=0
                 nborder=0
+            if(moneyprincipal/10<nborder):
+                nborderdouble=0
+                nborder=0
             newbuy=buy*pow(1.01,nborderdouble)
-            if(newbuy<user[self.moneyprincipal]):
+            if(newbuy<moneyprincipal):
                 self.db.updatedate()
                 quantite = newbuy/float(actifprix)
                 res=spot(self.client).buy_market(quantite,actifprix)
