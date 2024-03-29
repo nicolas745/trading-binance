@@ -9,6 +9,7 @@ from binance.client import AsyncClient
 from apibinance.spot import spot
 from apibinance.simpleearn import simple_earn
 from datetime import datetime, timedelta
+from .order import orders as buysell
 res = True
 class bot:
     def __init__(self, db:TradingDatabase,client:AsyncClient) -> None:
@@ -39,8 +40,7 @@ class bot:
                 pourcentage=(pricipal+((float(actifprix)-newprix)*actif))/pricipal-1
                 if 0.011<pourcentage:
                     if(actifprix<=self.sellprix):
-                        spot(self.client).sell_market(order['id'])
-                        Socketio.emit("del",order['id'])
+                        buysell(self.client).sell(Socketio,order)
         user=self.db.get_portfolio_data()
         self.time=(datetime.now().timestamp()-datetime.strptime(user[self.date], "%Y-%m-%dT%H:%M").timestamp())
         if(12*60*60<self.time):
@@ -54,7 +54,7 @@ class bot:
             if(512<nborder):
                 nborderdouble=0
                 nborder=0
-            if(moneyprincipal/10<nborder):
+            if(moneyprincipal/5<nborder):
                 nborderdouble=0
                 nborder=0
             newbuy=buy*pow(1.01,nborderdouble)
@@ -71,4 +71,4 @@ class bot:
     def getsellprix(self):
         return self.sellprix
     def getbuytime(self):
-        return str(timedelta(seconds=12*60*60- self.time))
+        return str(timedelta(seconds=12*60*60-self.time))
