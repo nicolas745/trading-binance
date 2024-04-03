@@ -29,7 +29,6 @@ class stream:
         async with ts as tscm:
             mybot = bot(db,self.client)
             while True:
-                print("dd")
                 res = await tscm.recv()
                 self.socketio.emit("prix",res['p'])
                 self.prix = res['p']
