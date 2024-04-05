@@ -3,12 +3,11 @@ function actualiserpris(prix){
     if(prixElement) {
         prixElement.innerText = prix;
     }
-
     Array.from(document.getElementsByClassName("benfpourcentage")).forEach((element)=>{
         var orderid = element.getAttribute("orderid");
-        var QactifElement = document.querySelector(".{{MONEY_ECHANGE}}[orderid='"+orderid+"']");
-        var QpricipalElement = document.querySelector(".{{MONEY_PRINCIPAL}}[orderid='"+orderid+"']");
-        var dateElement = document.querySelector(".{{DATE}}[orderid='"+orderid+"']");
+        var QactifElement = document.querySelector("." + MONEY_ECHANGE + "[orderid='"+orderid+"']");
+        var QpricipalElement = document.querySelector("." + MONEY_PRINCIPAL + "[orderid='"+orderid+"']");
+        var dateElement = document.querySelector("." + DATE + "[orderid='"+orderid+"']");
 
         if(QactifElement && QpricipalElement && dateElement) {
             var Qactif = QactifElement.innerText;
@@ -21,16 +20,23 @@ function actualiserpris(prix){
             var newprixElement = document.querySelector(".newprix[orderid='"+orderid+"']");
             var prixbuyElement = document.querySelector(".prixbuy[orderid='"+orderid+"']");
             var benefElement = document.querySelector(".benef[orderid='"+orderid+"']");
-
             if(newprixElement && prixbuyElement && benefElement) {
                 newprixElement.innerText = newprix;
                 prixbuyElement.innerText = prixbuy;
-                benefElement.innerText = ((prix-newprix)*Qactif)+" {{MONEY_PRINCIPAL}}";
+                benefElement.innerText = ((prix-newprix)*Qactif)+" " + MONEY_PRINCIPAL;
                 element.innerText = (Qpricipal+((prix-newprix)*Qactif))/Qpricipal-1;
+                if(element.innerText<=0){
+                    document.getElementById(orderid).style.backgroundColor = 'red';
+                }else if(element.innerText<=0.01){
+                    document.getElementById(orderid).style.backgroundColor = 'yellow'   
+                }else{
+                    document.getElementById(orderid).style.backgroundColor = '#00FF00';
+                }
             }
         }
     })
 }
+
 socket.on("prix",(prix)=>{
     actualiserpris(prix);
 });

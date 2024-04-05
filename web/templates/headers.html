@@ -3,7 +3,12 @@
     <script src="/static/socket.io.min.js"></script>
     <script>
         const socket = io();
+        var MONEY_ECHANGE = "{{MONEY_ECHANGE}}";
+        var MONEY_PRINCIPAL = "{{MONEY_PRINCIPAL}}";
+        var DATE = "{{DATE}}";
+        var orderid = "{{orderid}}";
     </script>
+    <link rel="stylesheet" href="/static/css/css.css">
     <a href="panel">index</a>
     <a href="order">order</a>
     <a href="historique">historique</a>
