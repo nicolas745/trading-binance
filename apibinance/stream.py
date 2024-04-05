@@ -15,6 +15,7 @@ class stream:
         self.socketio = socketio
         self.prix = 0
         self.buytime = 0
+        self.sellprix = 0
     def start(self):
         threading.Thread(target=self.load).start()
     def load(self):
