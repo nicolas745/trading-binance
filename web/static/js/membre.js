@@ -27,6 +27,7 @@ function actualiserpris(prix){
                 element.innerText = (Qpricipal+((prix-newprix)*Qactif))/Qpricipal-1;
                 if(element.innerText<=0){
                     document.getElementById(orderid).style.backgroundColor = 'red';
+                    document.getElementById(orderid).style.color = 'white'
                 }else if(element.innerText<=0.01){
                     document.getElementById(orderid).style.backgroundColor = 'yellow'   
                 }else{

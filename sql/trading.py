@@ -168,4 +168,4 @@ class TradingDatabase:
             histo = dict(zip(columns, result))
             return histo
         else:
-            return None
+            return []
