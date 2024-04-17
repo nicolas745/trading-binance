@@ -22,6 +22,7 @@ class bot:
         self.sellprix = 0
         self.time = 0
     def start(self, actifprix,Socketio:SocketIO):
+        executorder=0
         actifprix = float(actifprix)
         orders = self.db.get_all_orders()
         if self.sellprix < actifprix/1.01:
@@ -39,8 +40,10 @@ class bot:
                 newprix = prix * pow(1 + 0.001, 2) * pow(1 + 0.06 / (365 * 24 * 60 * 60), defdate)
                 pourcentage=(pricipal+((float(actifprix)-newprix)*actif))/pricipal-1
                 if 0.011<pourcentage:
-                    if(actifprix<=self.sellprix):
-                        buysell(self.client).sell(Socketio,order)
+                    if(executorder<4):
+                        executorder+=1
+                        if(actifprix<=self.sellprix):
+                            buysell(self.client).sell(Socketio,order)
         user=self.db.get_portfolio_data()
         self.time=(datetime.now().timestamp()-datetime.strptime(user[self.date], "%Y-%m-%dT%H:%M").timestamp())
         if(12*60*60<self.time):
