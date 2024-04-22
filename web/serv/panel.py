@@ -37,10 +37,12 @@ class panel():
                return self.misepage(**args)
           @app.get("/<idorder>/edit")
           def getedit(idorder):
+               trading=TradingDatabase()
                if(not session.get("user")):
                     return redirect("/")
                args = {
-                    "page":"edit.html"
+                    "page":"edit.html",
+                    "inforder": trading.get_order(idorder)
                }
                return self.misepage(**args)
           @app.post("/<idorder>/edit")
