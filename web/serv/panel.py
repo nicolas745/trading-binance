@@ -9,6 +9,7 @@ from sql.trading import TradingDatabase
 class panel():
      def __init__(self,app:Flask,socket:SocketIO) -> None:
           self.binance = Binance()
+          print("ddd")
           self.stream=self.binance.get_stream(socketio=socket)
           self.stream.start()
           @app.get("/panel")
