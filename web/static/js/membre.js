@@ -25,13 +25,15 @@ function actualiserpris(prix){
                 prixbuyElement.innerText = prixbuy;
                 benefElement.innerText = ((prix-newprix)*Qactif)+" " + MONEY_PRINCIPAL;
                 element.innerText = (Qpricipal+((prix-newprix)*Qactif))/Qpricipal-1;
-                if(element.innerText<=0){
-                    document.getElementById(orderid).style.backgroundColor = 'red';
-                    document.getElementById(orderid).style.color = 'white'
-                }else if(element.innerText<=0.01){
-                    document.getElementById(orderid).style.backgroundColor = 'yellow'   
-                }else{
-                    document.getElementById(orderid).style.backgroundColor = '#00FF00';
+                var orderElement = document.getElementById(orderid);
+                if(orderElement) {
+                    if(element.innerText <= 0){
+                        orderElement.setAttribute("pos", "neg");
+                    } else if(element.innerText <= 0.01){
+                        orderElement.setAttribute("pos", "neutre");
+                    } else {
+                        orderElement.setAttribute("pos", "pos");
+                    }
                 }
             }
         }

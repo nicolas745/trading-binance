@@ -1,0 +1,14 @@
+[pos="neg"] {
+    background-color: #FF0000; /* Rouge */
+    color: #FFFFFF; /* Texte blanc */
+  }
+  
+[pos="neutre"] {
+    background-color: #FFFF00; /* Jaune */
+    color: #000000; /* Texte noir */
+  }
+  
+[pos="pos"] {
+    background-color: #00FF00; /* Vert */
+    color: #000000; /* Texte noir */
+  }  
