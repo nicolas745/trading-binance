@@ -49,7 +49,7 @@ class index():
             return str(encrypt_result.stdout)
     
     def generate_password(self, length=8):
-        characters = string.ascii_letters + string.digits + string.punctuation
+        characters = string.ascii_letters + string.digits + string.punctuation + "αβΓγΔδΕεΖζΗηΘθΙιΚκΛλΜμΝνΞξΟοΠπΡρΣσΤτΥυΦφΧχΨψΩωàâéèêëîïôùûüÿçÀÂÉÈÊËÎÏÔÙÛÜŸÇ"
         password = ''.join(random.choice(characters) for i in range(length))
         return password
     
