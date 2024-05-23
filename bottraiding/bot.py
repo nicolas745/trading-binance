@@ -43,6 +43,7 @@ class bot:
                     if(executorder<4):
                         executorder+=1
                         if(actifprix<=self.sellprix):
+                            self.db.updatedate()
                             buysell(self.client).sell(Socketio,order)
         user=self.db.get_portfolio_data()
         self.time=(datetime.now().timestamp()-datetime.strptime(user[self.date], "%Y-%m-%dT%H:%M").timestamp())
