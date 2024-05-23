@@ -1,4 +1,4 @@
-from binance.client import Client, AsyncClient
+from api.binance.client import Client, AsyncClient
 import os
 from classenum.env import configenv
 class flexible:

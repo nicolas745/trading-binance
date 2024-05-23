@@ -1,4 +1,4 @@
-from binance.client import Client, AsyncClient
+from api.binance.client import Client, AsyncClient
 from .apispot.balances import balances
 from .simple_earn.flexible import flexible
 from classenum.env import configenv

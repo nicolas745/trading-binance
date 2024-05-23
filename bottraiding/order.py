@@ -1,5 +1,5 @@
 
-from apibinance.spot import spot
+from bottoapi.binance.spot import spot
 from flask_socketio import SocketIO
 class orders:
     def __init__(self,client) -> None:

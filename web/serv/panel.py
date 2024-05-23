@@ -3,7 +3,7 @@ from chameleon import PageTemplate
 from flask_socketio import SocketIO
 import os
 from classenum.env import configenv
-from apibinance.binance import Binance
+from bottoapi.binance.binance import Binance
 from classenum.sql import enumsql
 from sql.trading import TradingDatabase
 class panel():

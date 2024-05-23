@@ -1,4 +1,4 @@
-from binance.client import Client
+from api.binance.client import Client
 from datetime import datetime, timedelta
 from classenum.sql import enumsql
 from sql.trading import TradingDatabase

@@ -5,9 +5,9 @@ from datetime import datetime
 import os
 import numpy as np
 from flask_socketio import SocketIO
-from binance.client import AsyncClient
-from apibinance.spot import spot
-from apibinance.simpleearn import simple_earn
+from api.binance.client import AsyncClient
+from bottoapi.binance.spot import spot
+from bottoapi.binance.simpleearn import simple_earn
 from datetime import datetime, timedelta
 from .order import orders as buysell
 res = True
