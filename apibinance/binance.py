@@ -1,5 +1,5 @@
 import os
-from api.binance.client import Client
+from binance.client import Client
 from .spot import spot
 from .simpleearn import simple_earn
 from .stream import stream

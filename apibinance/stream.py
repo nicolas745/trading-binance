@@ -1,5 +1,5 @@
-from api.binance.client import Client ,AsyncClient
-from api.binance.streams import BinanceSocketManager
+from binance.client import Client ,AsyncClient
+from binance.streams import BinanceSocketManager
 import time
 import asyncio
 import threading

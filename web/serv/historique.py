@@ -4,7 +4,7 @@ from flask_socketio import SocketIO
 from sql.trading import TradingDatabase
 from classenum.env import configenv
 from classenum.sql import enumsql
-from bottoapi.binance.binance import Binance
+from apibinance.binance import Binance
 from datetime import datetime
 import os
 class historique():
