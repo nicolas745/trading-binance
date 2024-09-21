@@ -51,7 +51,7 @@ class bot:
                         derivee_difference = 0
 
                     # Vérification des conditions
-                    return difference > 0 or derivee_difference > 0 or derivee_difference == 0
+                    return difference < 0 or derivee_difference < 0 or derivee_difference != 0
         return False
     def date_plus_recente(self, fichier):
         if os.path.exists(fichier):
@@ -96,7 +96,7 @@ class bot:
         elif actifprix <self.sellprix:
             self.sellprix = actifprix
         if orders.__len__():
-            if not self.condition_ma(self.filejson):
+            if self.condition_ma(self.filejson):
                 for order in orders:
                     pricipal= order[self.moneyprincipal]
                     actif=order[self.moneyechange]
