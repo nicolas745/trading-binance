@@ -43,7 +43,7 @@ class bot:
 
                     # Calcul de la dérivée de la différence
                     if len(prix) > 200:
-                        ma100_past = np.mean(prix[-101:-1])
+                        ma100_past = np.mean(prix[-51:-1])
                         ma200_past = np.mean(prix[-201:-1])
                         difference_past = ma100_past - ma200_past
                         derivee_difference = difference - difference_past
