@@ -37,15 +37,15 @@ class bot:
 
                 if len(prix) >= 200:
                     # Calcul de MA100 et MA200
-                    ma100 = np.mean(prix[-100:])
+                    ma50 = np.mean(prix[-50:])
                     ma200 = np.mean(prix[-200:])
-                    difference = ma100 - ma200
+                    difference = ma50 - ma200
 
                     # Calcul de la dérivée de la différence
                     if len(prix) > 200:
-                        ma100_past = np.mean(prix[-51:-1])
+                        ma50_past = np.mean(prix[-51:-1])
                         ma200_past = np.mean(prix[-201:-1])
-                        difference_past = ma100_past - ma200_past
+                        difference_past = ma50_past - ma200_past
                         derivee_difference = difference - difference_past
                     else:
                         derivee_difference = 0
